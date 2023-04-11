@@ -48,7 +48,6 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 let stakeData = (await provider.getDynamicFieldObject({parentId: SHS_STAKING_POOL, name:stakeDataObject.name})).data
                 if(stakeData?.content?.dataType==="moveObject"){
                     setUserData(stakeData?.content!.fields)
-                    console.log(stakeData.content.fields["amount"])
                 }
                 else
                     setUserData(null)
@@ -63,7 +62,6 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             owner: wallet.address!,
             coinType: SHS_CONTRACT_ADDRESS+'::shs::SHS'
         })).data
-        console.log(coins)
         let stakeAmount = amount * (10 ** DECIMALS)
         if(coins.length===0) return Error("No token");
         let total=0;
