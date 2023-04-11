@@ -7,6 +7,7 @@ export interface ProgramContextState{
     getStakingPoolData() : void;
     stake_shs(amount: number) : void;
     unstake_shs(amount: number) : void;
+    claim_rewards() : void;
 }
 
 export const ProgramContext = createContext<ProgramContextState>({

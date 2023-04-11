@@ -4,7 +4,7 @@ import { useProgram } from "../utils/useProgram"
 import { openNotification } from "../utils/constants"
 
 export default function Staking(){
-    const {stake_shs, unstake_shs, userData, getUserData, poolData} = useProgram()
+    const {claim_rewards,stake_shs, unstake_shs, userData, getUserData, poolData} = useProgram()
 
     const [stakeAmount, setStakeAmount] = useState('')
     const [unstakeAmount, setUnstakeAmount] = useState('')
@@ -22,7 +22,7 @@ export default function Staking(){
                 </div>
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">APY</p>
-                    <p className="staking-main-panel-one-info-detail">{poolData==null ? "-" : poolData['apy']+" %"}</p>
+                    <p className="staking-main-panel-one-info-detail">{poolData==null ? "-" : (poolData['apy']/100)+" %"}</p>
                 </div>
             </div>
             <div className="staking-main-panel-reward-info">
@@ -72,7 +72,15 @@ export default function Staking(){
                 </div>
             </div>
             <div className="staking-main-panel-action-reward-part">
-                <Button variant="outlined" sx={{width:"100%", borderRadius: "0.8rem", fontFamily: "IndustryBold"}} color="success">Claim Reward</Button>
+                <Button variant="outlined" sx={{width:"100%", borderRadius: "0.8rem", fontFamily: "IndustryBold"}} color="success" onClick={async()=>{
+                    try{
+                        await claim_rewards()
+                        openNotification('success', 'Claim Reward Success!')
+                        getUserData()
+                    }catch(err: any){
+                        openNotification('error', err.message)
+                    }
+                }}>Claim Reward</Button>
             </div>
         </div>
         <div className="nft-staking-panel-wrapper">

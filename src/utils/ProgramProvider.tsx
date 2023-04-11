@@ -100,11 +100,21 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             ]
         })
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
-    },[wallet, provider])
+    },[wallet])
 
     const claim_rewards = useCallback(async()=>{
-
-    },[])
+        const tx= new TransactionBlock()
+        tx.moveCall({
+            target: `${SHS_CONTRACT_ADDRESS}::token_staking::redeem_reward`,
+            typeArguments:[
+                SHS_CONTRACT_ADDRESS+"::shs::SHS"
+            ],
+            arguments:[
+                tx.object(SHS_STAKING_POOL)
+            ]
+        })
+        await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
+    },[wallet])
 
     const stake_nft = useCallback(async()=>{
 
@@ -121,5 +131,6 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         getStakingPoolData,
         stake_shs,
         unstake_shs,
+        claim_rewards
     }}>{children}</ProgramContext.Provider>
 }

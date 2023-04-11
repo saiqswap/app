@@ -8,17 +8,18 @@ import {
     CasinoRounded as CasinoRoundedIcon,
     DocumentScannerRounded as DocumentScannerRoundedIcon
 } from '@mui/icons-material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 // const menuItems = ['Home', 'Staking', 'About', 'Coin Flip', 'Dice Game', 'Tower', 'Lucky Wheel', 'Docs']
 
 const menuItems = [
-    {name: "Home", element: <HomeIcon sx={{fontSize: "30px"}}/>, link: "home"},
-    {name: "Staking", element: <AccountBalanceIcon sx={{fontSize: "30px"}}/>, link: "staking"},
-    {name: "Coin Flip", element: <CurrencyExchangeIcon />, link: "coinflip"},
-    {name: "Tower", element: <DomainRoundedIcon sx={{fontSize: "30px"}}/>, link: "tower"},
-    {name: "Dice Game", element: <CasinoRoundedIcon sx={{fontSize: "30px"}}/>, link: "dice"},
-    {name: "Docs", element: <DocumentScannerRoundedIcon sx={{fontSize: "30px"}}/>, link: "docs"},
+    {name: "Home", element: <HomeIcon sx={{fontSize: "30px"}}/>, link: "/home"},
+    {name: "Staking", element: <AccountBalanceIcon sx={{fontSize: "30px"}}/>, link: "/staking"},
+    {name: "Coin Flip", element: <CurrencyExchangeIcon />, link: "/coinflip"},
+    {name: "Tower", element: <DomainRoundedIcon sx={{fontSize: "30px"}}/>, link: "/tower"},
+    {name: "Dice Game", element: <CasinoRoundedIcon sx={{fontSize: "30px"}}/>, link: "/dice"},
+    {name: "Docs", element: <DocumentScannerRoundedIcon sx={{fontSize: "30px"}}/>, link: "/docs"},
 ]
 
 const drawerWidth = 240;
@@ -26,19 +27,19 @@ const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   background: "linear-gradient(0deg, rgb(16, 28, 43), rgb(16, 28, 43)), linear-gradient(180.6deg, rgb(17, 25, 35) 0.46%, rgb(19, 33, 51) 99.43%), linear-gradient(rgb(0, 3, 6) 0%, rgb(1, 9, 18) 60.19%);",  
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
+  // transition: theme.transitions.create('width', {
+  //   easing: theme.transitions.easing.sharp,
+  //   duration: theme.transitions.duration.enteringScreen,
+  // }),
   overflowX: 'hidden',
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
   background: "linear-gradient(0deg, rgb(16, 28, 43), rgb(16, 28, 43)), linear-gradient(180.6deg, rgb(17, 25, 35) 0.46%, rgb(19, 33, 51) 99.43%), linear-gradient(rgb(0, 3, 6) 0%, rgb(1, 9, 18) 60.19%);",
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
+  // transition: theme.transitions.create('width', {
+  //   easing: theme.transitions.easing.sharp,
+  //   duration: theme.transitions.duration.leavingScreen,
+  // }),
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
@@ -67,11 +68,21 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 
 export default function SideBar(){
+    
     const [open, setOpen] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(0)
 
+    useEffect(()=>{
+      let path = window.location.pathname
+      for(let i=0; i<menuItems.length; i++){
+        if(path===menuItems[i].link)
+          setSelectedIndex(i)
+      }
+    },[])
+
     const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, idx: number) => {
         setSelectedIndex(idx)
+        window.location.href = menuItems[idx].link
     }
 
     return <Drawer variant="permanent" open={open} onMouseOver={()=>{setOpen(true)}} onMouseLeave={()=>{setOpen(false)}}>
