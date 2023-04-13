@@ -13,6 +13,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const provider = useSuiProvider(wallet.chain?.rpcUrl!)
     const [userData, setUserData] = useState<any>(null)
     const [poolData, setPoolData] = useState<any>(null)
+    const [shsOwned, setShsOwned] = useState(0)
 
     useEffect(()=>{
         getStakingPoolData()
@@ -20,7 +21,12 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
 
     useEffect(()=>{
         getUserData()
-    },[wallet])
+        getShsOwned()
+    },[wallet, poolData])
+
+    useEffect(()=>{
+        getShsOwned()
+    },[userData])
 
     const getStakingPoolData = async() => {
         try{
@@ -31,6 +37,21 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 setPoolData(null)
         }catch(err){
             setPoolData(null)
+        }
+    }
+
+    const getShsOwned = async() => {
+        try{
+            let coins = (await provider.getCoins({
+                owner: wallet.address!,
+                coinType: SHS_CONTRACT_ADDRESS+'::shs::SHS'
+            })).data
+            let total = 0;
+            for(let item of coins)
+                total+=Number(item.balance)
+            setShsOwned(total)
+        }catch(err){
+            setShsOwned(0)
         }
     }
 
@@ -47,7 +68,11 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 }
                 let stakeData = (await provider.getDynamicFieldObject({parentId: SHS_STAKING_POOL, name:stakeDataObject.name})).data
                 if(stakeData?.content?.dataType==="moveObject"){
-                    setUserData(stakeData?.content!.fields)
+                    let current_time = (new Date()).getTime()
+                    let uD = stakeData.content.fields
+                    if(poolData!=null)
+                        uD['reward_amount'] = Math.floor(Number(uD['reward_amount'])+(current_time - uD['last_changed_time']) * (poolData['apy']/10000) * uD['amount'] / (365 * 24 * 60 * 60 * 1000))
+                    setUserData(uD)
                 }
                 else
                     setUserData(null)
@@ -79,13 +104,15 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             arguments:[
                 tx.object(SHS_STAKING_POOL),
                 tx.object(coins[0].coinObjectId),
-                tx.pure(amount)
+                tx.pure(stakeAmount),
+                tx.object("0x6")
             ]
         })
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
     },[wallet, provider])
 
     const unstake_shs = useCallback(async(amount: number)=>{
+        let unstakeAmount = amount * (10 ** DECIMALS)
         const tx = new TransactionBlock()
         tx.moveCall({
             target: `${SHS_CONTRACT_ADDRESS}::token_staking::unstake_token`,
@@ -94,7 +121,8 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             ],
             arguments:[
                 tx.object(SHS_STAKING_POOL),
-                tx.pure(amount)
+                tx.pure(unstakeAmount),
+                tx.object("0x6")
             ]
         })
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
@@ -108,7 +136,8 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 SHS_CONTRACT_ADDRESS+"::shs::SHS"
             ],
             arguments:[
-                tx.object(SHS_STAKING_POOL)
+                tx.object(SHS_STAKING_POOL),
+                tx.object("0x6")
             ]
         })
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
@@ -125,6 +154,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     return <ProgramContext.Provider value={{
         userData,
         poolData,
+        shsOwned,
         getUserData,
         getStakingPoolData,
         stake_shs,

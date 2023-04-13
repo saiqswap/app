@@ -4,6 +4,7 @@ import '@suiet/wallet-kit/style.css'
 
 import Home from './pages/home';
 import About from './pages/about'
+import Coinflip from './pages/coinflip';
 import Empty from './pages/empty';
 import Staking from './pages/staking'
 import Header from './components/header';

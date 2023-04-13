@@ -1,15 +1,15 @@
 import { Button } from "@mui/material"
 import { useState } from "react"
 import { useProgram } from "../utils/useProgram"
-import { openNotification } from "../utils/constants"
+import { DECIMALS, openNotification, sleep } from "../utils/constants"
 
 export default function Staking(){
-    const {claim_rewards,stake_shs, unstake_shs, userData, getUserData, poolData} = useProgram()
+    const {claim_rewards,stake_shs, unstake_shs, userData, getUserData, poolData, getStakingPoolData, shsOwned} = useProgram()
 
     const [stakeAmount, setStakeAmount] = useState('')
     const [unstakeAmount, setUnstakeAmount] = useState('')
 
-    return <div className="dashboard">
+    return <div className="staking-dashboard">
         <div className="staking-main-panel">
             <div className="staking-main-panel-title">
                 <h2>SHS STAKING</h2>
@@ -18,7 +18,7 @@ export default function Staking(){
             <div className="staking-main-panel-pool-info">
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">TVL</p>
-                    <p className="staking-main-panel-one-info-detail">{poolData==null ? "-" : poolData['tvl']+" SHS"}</p>
+                    <p className="staking-main-panel-one-info-detail">{poolData==null ? "-" : (poolData['tvl']/(10**DECIMALS))+" SHS"}</p>
                 </div>
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">APY</p>
@@ -26,17 +26,17 @@ export default function Staking(){
                 </div>
             </div>
             <div className="staking-main-panel-reward-info">
-                <p className="staking-main-panel-reward-amount">0.00</p>
-                <p className="staking-main-panel-reward-info-title">SHS Earned</p>
+                <p className="staking-main-panel-reward-amount">{shsOwned/(10**DECIMALS)}</p>
+                <p className="staking-main-panel-reward-info-title">SHS Owned</p>
             </div>
             <div className="staking-main-panel-staking-info">
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">Staked</p>
-                    <p className="staking-main-panel-one-info-detail">{userData==null ? "-" : userData['amount']+" SHS"}</p>
+                    <p className="staking-main-panel-one-info-detail">{userData==null ? "-" : (userData['amount']/(10**DECIMALS))+" SHS"}</p>
                 </div>
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">Reward</p>
-                    <p className="staking-main-panel-one-info-detail">{userData==null? "-" : userData['reward_amount']+" SHS"}</p>
+                    <p className="staking-main-panel-one-info-detail">{userData==null? "-" : (userData['reward_amount']/(10**DECIMALS))+" SHS"}</p>
                 </div>
             </div>
             <div className="staking-main-panel-action-part">
@@ -49,7 +49,8 @@ export default function Staking(){
                         try{
                             await stake_shs(Number(stakeAmount))
                             openNotification('success', 'Stake Success!')
-                            getUserData()
+                            await sleep(2000);
+                            getStakingPoolData()
                         }catch(err: any){
                             openNotification('error',err.message)
                         }
@@ -64,7 +65,8 @@ export default function Staking(){
                         try{
                             await unstake_shs(Number(unstakeAmount))
                             openNotification('success', 'Unstake Success!')
-                            getUserData()
+                            await sleep(2000)
+                            getStakingPoolData()
                         }catch(err: any){
                             openNotification('error', err.message)
                         }
@@ -76,6 +78,7 @@ export default function Staking(){
                     try{
                         await claim_rewards()
                         openNotification('success', 'Claim Reward Success!')
+                        await sleep(2000)
                         getUserData()
                     }catch(err: any){
                         openNotification('error', err.message)

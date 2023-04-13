@@ -10,7 +10,7 @@ export default function Header(){
                     <img src={LogoIMG} alt="logo" width="45px"/>&nbsp;SUIHEROES
                 </Typography>
                 <Box sx={{display: "block"}}>
-                    <ConnectButton/>
+                    <ConnectButton>Connect Wallet</ConnectButton>
                 </Box>
             </Toolbar>
         </AppBar>
