@@ -168,7 +168,7 @@ export default function Staking(){
                         await claim_rewards()
                         openNotification('success', 'Claim Reward Success!')
                         await sleep(2000)
-                        getUserDataBatch()
+                        getStakingUserData()
                     }catch(err: any){
                         openNotification('error', err.message)
                     }

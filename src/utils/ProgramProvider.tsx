@@ -2,7 +2,7 @@ import {FC, useCallback, useMemo, useState, ReactNode, useEffect} from 'react'
 import { ProgramContext } from './useProgram'
 import { useWallet, useSuiProvider, useAccountBalance, } from '@suiet/wallet-kit'
 import { TransactionBlock } from '@mysten/sui.js'
-import { SHS_TOKEN_CONTRACT_ADDRESS, SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE} from './constants'
+import { SHS_TOKEN_CONTRACT_ADDRESS, SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE, SHS_COINFLIP_CONTRACT_ADDRESS, COINFLIP_TOKEN_TYPE, COINFLIP_POOL, COINFLIP_TOKEN_DECIMALS} from './constants'
 
 export interface ProgramProviderProps{
     children : ReactNode
@@ -116,10 +116,10 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             coinType: STAKING_TOKEN_TYPE
         })).data
         let stakeAmount = amount * (10 ** DECIMALS)
-        if(coins.length===0) return Error("No token");
+        if(coins.length===0) throw new Error("No token");
         let total=0;
         for(let item of coins) total+=item.balance
-        if(total<stakeAmount) return Error("NotEnoughToken")
+        if(total<stakeAmount) throw new Error("Not Enough Token")
         
         const tx = new TransactionBlock()
         if(coins.length>1)
@@ -210,16 +210,63 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
     }, [wallet])
 
+    const coinflip_flip = useCallback(async(selectedSide: number, selectedAmount: number)=>{
+        let coins = (await provider.getCoins({
+            owner: wallet.address!,
+            coinType: COINFLIP_TOKEN_TYPE
+        })).data
+        let amount = selectedAmount * (10 ** COINFLIP_TOKEN_DECIMALS)
+        if(coins.length===0) throw new Error("No token");
+        let total=0;
+        for(let item of coins) total+=item.balance
+        if(total<amount) throw new Error("Not Enough Token")
+
+        const tx = new TransactionBlock()
+        if(coins.length>1)
+            tx.mergeCoins(tx.object(coins[0].coinObjectId), coins.slice(1,coins.length).map(item=>{return tx.object(item.coinObjectId)}))
+        tx.moveCall({
+            target: `${SHS_COINFLIP_CONTRACT_ADDRESS}::coinflip::play_mut`,
+            typeArguments:[
+                COINFLIP_TOKEN_TYPE
+            ],
+            arguments:[
+                tx.object(COINFLIP_POOL),
+                tx.object(coins[0].coinObjectId),
+                tx.pure(amount),
+                tx.pure(selectedSide+1),
+                tx.object("0x06")
+            ]
+        })
+        await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
+    }, [wallet, provider])
+
+    const coinflip_claim = useCallback(()=>{
+        const tx = new TransactionBlock()
+        tx.moveCall({
+            target: `${SHS_COINFLIP_CONTRACT_ADDRESS}::coinflip::claim`,
+            typeArguments:[
+                COINFLIP_TOKEN_TYPE
+            ],
+            arguments:[
+                tx.object(COINFLIP_POOL)
+            ]
+        })
+    },[wallet])
+
     return <ProgramContext.Provider value={{
         getUserStakeData,
         getOwnedNfts,
         getStakedNfts,
         getStakingPoolData,
         getShsOwned,
+        
         stake_shs,
         unstake_shs,
         claim_rewards,
         stake_nfts,
         unstake_nfts,
+
+        coinflip_claim,
+        coinflip_flip,
     }}>{children}</ProgramContext.Provider>
 }

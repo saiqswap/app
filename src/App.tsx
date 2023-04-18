@@ -31,7 +31,7 @@ function App() {
             <Route path="/home" element={<Empty/>}/>
             <Route path="/staking" element={<Staking/>} />
             <Route path="/about" element={<Empty/>} />
-            <Route path="/coinflip" element={<Empty/>}/>
+            <Route path="/coinflip" element={<Coinflip/>}/>
           </Routes>
         </Router>
       </ProgramProvider>

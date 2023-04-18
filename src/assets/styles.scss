@@ -333,28 +333,30 @@ body{
 	}
 	.coinflip-gameboard{
 		display: flex;
-		flex-direction: row;
-		justify-content: center;
+		flex-direction: column;
+		// justify-content: center;
+		align-items: center;
 		margin : 20px;
 		border-radius: 16px;
 		border: 2px solid rgb(26, 41, 61);
 		background: linear-gradient(268.42deg, rgb(26, 41, 61) 0%, rgba(26, 41, 61, 0) 100.18%);
-		height: 300px;
 		width: 80%;
+		max-width: 940px;
 
 		.coin-select-panel{
 			display: flex;
 			gap: 60px;
+			margin-top: 20px;
 
 			.coin-select-button{
 				cursor: pointer;
 				display: flex;
-				justify-content: center;
 				align-items: center;
+				justify-content: center;
 				border-radius: 100%;
-				width: 72px;
-				height: 72px;
-				opacity: 0.3;
+				width: 120px;
+				height: 120px;
+				opacity: 0.2;
 				transition: all 0.3s ease-in 0s;
 				&.active{
 					opacity: 1;
@@ -370,6 +372,53 @@ body{
 				background: linear-gradient(149.33deg, rgb(227, 146, 255) 7.45%, rgb(154, 26, 255) 98.66%);
 				box-shadow: rgb(93, 36, 255) 0px 0px 30px;
 				color: rgba(46, 0, 143, 0.5);
+			}
+		}
+
+		.wager-select-panel{
+			width: 80%;
+			.btn-wager{
+				position: relative;
+				border: 1px solid transparent;
+				border-radius: 8px;
+				color: rgb(118, 139, 173);
+				background-color: rgb(36, 47, 66);
+				font-size: 20px;
+				font-family: "IndustryBlack";
+				margin: 10px 20px;
+				width: 150px;
+				height: 62px;
+				transition: all 0.3s ease-in 0s;
+				&.active{
+					border: 1px solid rgb(79, 255, 139);
+					color: rgb(79, 255, 139);
+				}
+			}
+		}
+
+		.coinflip-gameboard-h3{
+			color: #D0DAEB
+		}
+
+		.btn-flip-wrapper{
+			margin: 1em auto;
+			width: 100%;
+			text-align: center;
+			.btn-flip{
+				cursor: pointer;
+				width: 200px;
+				height: 60px;
+				border: 1px solid transparent;
+				border-radius: 8px;
+				color: rgb(118, 139, 173);
+				background-color: rgb(36, 47, 66);
+				font-size: 20px;
+				font-family: "IndustryBlack";
+
+				&:hover{
+					background-color: rgb(118, 139, 173);
+					color: rgb(36, 47, 66);
+				}
 			}
 		}
 	}
