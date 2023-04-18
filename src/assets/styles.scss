@@ -239,11 +239,24 @@ body{
 
 				.nft-staking-one-panel-content-body{
 					display: flex;
+					gap: 10px;
 					flex-wrap: wrap;
-
+					// justify-content: flex-start;
+					.nft-staking-one-panel-content-body-banner{
+						font-size: 30px;
+						margin-top: 150px;
+						width: 100%;
+						text-align: center;
+					}
+					.nft-staking-one-panel-content-body-loading{
+						width: 100%;
+						text-align: center;
+						margin-top: 100px;
+					}
 					.nft{
+						cursor: pointer;
 						flex-grow: 1;
-						min-width: 40px;
+						width: 120px;
 						margin: 3px;
 
 						img{
@@ -254,13 +267,20 @@ body{
 						.normal-border{
 							border: 3px solid #e9ffc5;
 						}
+						.normal-color{
+							color: #e9ffc5;
+						}
 						.red-border{
 							border: 3px solid rgb(186, 44, 44);
 						}
+						.red-color{
+							color: red
+						}
 						p{
+							margin-top: 4px;
 							font-family: "IndustryBlack";
 							font-size: 12px;
-							cursor: pointer
+							cursor: pointer;
 						}
 					}
 				}
@@ -327,6 +347,7 @@ body{
 			gap: 60px;
 
 			.coin-select-button{
+				cursor: pointer;
 				display: flex;
 				justify-content: center;
 				align-items: center;

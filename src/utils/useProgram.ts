@@ -1,18 +1,19 @@
 import { createContext, useContext } from "react";
 
 export interface ProgramContextState{
-    userData : any,
-    poolData : any,
-    shsOwned : number,
-    getUserData() : void;
-    getStakingPoolData() : void;
+    getUserStakeData() : Promise<any>;
+    getStakingPoolData() : Promise<any>;
+    getShsOwned() : Promise<number>;
+    getOwnedNfts() : Promise<any[]>;
+    getStakedNfts() : Promise<any[]>;
     stake_shs(amount: number) : void;
     unstake_shs(amount: number) : void;
     claim_rewards() : void;
+    stake_nfts(item : string[]) : void;
+    unstake_nfts(item : string[]) : void;
 }
 
 export const ProgramContext = createContext<ProgramContextState>({
-    shsOwned:0
 } as ProgramContextState)
 
 export function useProgram() : ProgramContextState{

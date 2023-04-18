@@ -1,5 +1,5 @@
 import {Route, Routes, BrowserRouter as Router} from 'react-router-dom'
-import {WalletProvider} from '@suiet/wallet-kit'
+import {WalletProvider, SuiTestnetChain, Chain} from '@suiet/wallet-kit'
 import '@suiet/wallet-kit/style.css'
 
 import Home from './pages/home';
@@ -14,8 +14,14 @@ import './assets/styles.scss'
 import { ProgramProvider } from './utils/ProgramProvider';
 
 function App() {
+  const customChain : Chain = {
+    id: "testnet",
+    name: "testnet",
+    rpcUrl: "https://testnet.suiet.app/"
+  }  
+
   return (
-    <WalletProvider>
+    <WalletProvider chains={[SuiTestnetChain, customChain]}>
       <ProgramProvider>
         <Header/>
         <SideBar/>
