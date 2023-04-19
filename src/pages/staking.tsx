@@ -1,7 +1,7 @@
 import { Button, CircularProgress } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useProgram } from "../utils/useProgram"
-import { DECIMALS, openNotification, sleep } from "../utils/constants"
+import { DECIMALS, STAKING_TOKEN_TYPE, openNotification, sleep } from "../utils/constants"
 import { useWallet } from "@suiet/wallet-kit"
 
 export default function Staking(){
@@ -45,7 +45,7 @@ export default function Staking(){
     }
 
     const getShsAmount = async() => {
-        setShsOwned(await getShsOwned())
+        setShsOwned(await getShsOwned(STAKING_TOKEN_TYPE))
     }
 
     const getUserOwnedNftsData = async() => {

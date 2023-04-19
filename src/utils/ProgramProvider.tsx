@@ -1,8 +1,8 @@
-import {FC, useCallback, useMemo, useState, ReactNode, useEffect} from 'react'
+import {FC, useCallback, ReactNode,} from 'react'
 import { ProgramContext } from './useProgram'
-import { useWallet, useSuiProvider, useAccountBalance, } from '@suiet/wallet-kit'
+import { useWallet, useSuiProvider, } from '@suiet/wallet-kit'
 import { TransactionBlock } from '@mysten/sui.js'
-import { SHS_TOKEN_CONTRACT_ADDRESS, SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE, SHS_COINFLIP_CONTRACT_ADDRESS, COINFLIP_TOKEN_TYPE, COINFLIP_POOL, COINFLIP_TOKEN_DECIMALS} from './constants'
+import { SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE, SHS_COINFLIP_CONTRACT_ADDRESS, COINFLIP_TOKEN_TYPE, COINFLIP_POOL, COINFLIP_TOKEN_DECIMALS} from './constants'
 
 export interface ProgramProviderProps{
     children : ReactNode
@@ -12,6 +12,21 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const wallet = useWallet()
     const provider = useSuiProvider(wallet.chain?.rpcUrl!)
 
+    const getShsOwned = async(coinType : string) => {
+        try{
+            let coins = (await provider.getCoins({
+                owner: wallet.address!,
+                coinType: coinType
+            })).data
+            let total = 0;
+            for(let item of coins)
+                total+=Number(item.balance)
+            return total
+        }catch(err){
+            return 0
+        }
+    }
+    
     const getStakingPoolData = async() => {
         try{
             let res = (await provider.getObject({id: STAKING_POOL, options: {showContent: true}})).data
@@ -21,21 +36,6 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 return null
         }catch(err){
             return null
-        }
-    }
-
-    const getShsOwned = async() => {
-        try{
-            let coins = (await provider.getCoins({
-                owner: wallet.address!,
-                coinType: STAKING_TOKEN_TYPE
-            })).data
-            let total = 0;
-            for(let item of coins)
-                total+=Number(item.balance)
-            return total
-        }catch(err){
-            return 0
         }
     }
 
@@ -210,6 +210,22 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
     }, [wallet])
 
+    const getUserCoinflipData = async() => {
+        try{
+            if(wallet.address===undefined) return null
+            let res = (await provider.getDynamicFields({parentId: COINFLIP_POOL})).data
+            let coinflipDataObject = res.find((item)=>{return item.name.value===wallet.address})
+            if(coinflipDataObject===undefined) return null
+            let coinflipData = (await provider.getDynamicFieldObject({parentId: COINFLIP_POOL, name: coinflipDataObject.name})).data
+            if(coinflipData?.content?.dataType==="moveObject")
+                return coinflipData.content.fields
+            else
+                return null
+        }catch(err){
+            return null
+        }
+    }
+
     const coinflip_flip = useCallback(async(selectedSide: number, selectedAmount: number)=>{
         let coins = (await provider.getCoins({
             owner: wallet.address!,
@@ -237,10 +253,10 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 tx.object("0x06")
             ]
         })
-        await wallet.signAndExecuteTransactionBlock({transactionBlock: tx})
+        return await wallet.signAndExecuteTransactionBlock({transactionBlock: tx, options:{showEffects:true, showEvents: true, showObjectChanges: true, showBalanceChanges: true, showInput: true}})
     }, [wallet, provider])
 
-    const coinflip_claim = useCallback(()=>{
+    const coinflip_claim = useCallback(async()=>{
         const tx = new TransactionBlock()
         tx.moveCall({
             target: `${SHS_COINFLIP_CONTRACT_ADDRESS}::coinflip::claim`,
@@ -251,21 +267,25 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 tx.object(COINFLIP_POOL)
             ]
         })
+        await wallet.signAndExecuteTransactionBlock({transactionBlock: tx, options:{showEffects:true, showEvents: true, showObjectChanges: true, showBalanceChanges: true, showInput: true}})
     },[wallet])
 
     return <ProgramContext.Provider value={{
+        getShsOwned,
+
+        // Staking Platform
         getUserStakeData,
         getOwnedNfts,
         getStakedNfts,
         getStakingPoolData,
-        getShsOwned,
-        
         stake_shs,
         unstake_shs,
         claim_rewards,
         stake_nfts,
         unstake_nfts,
 
+        //Coinflip
+        getUserCoinflipData,
         coinflip_claim,
         coinflip_flip,
     }}>{children}</ProgramContext.Provider>
