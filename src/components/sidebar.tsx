@@ -17,8 +17,8 @@ const menuItems = [
     {name: "Home", element: <HomeIcon sx={{fontSize: "30px"}}/>, link: "/home"},
     {name: "Staking", element: <AccountBalanceIcon sx={{fontSize: "30px"}}/>, link: "/staking"},
     {name: "Coin Flip", element: <CurrencyExchangeIcon />, link: "/coinflip"},
-    {name: "Tower", element: <DomainRoundedIcon sx={{fontSize: "30px"}}/>, link: "/tower"},
     {name: "Dice Game", element: <CasinoRoundedIcon sx={{fontSize: "30px"}}/>, link: "/dice"},
+    {name: "Tower", element: <DomainRoundedIcon sx={{fontSize: "30px"}}/>, link: "/tower"},
     {name: "Docs", element: <DocumentScannerRoundedIcon sx={{fontSize: "30px"}}/>, link: "/docs"},
 ]
 

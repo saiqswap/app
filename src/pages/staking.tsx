@@ -22,7 +22,7 @@ export default function Staking(){
 
     useEffect(()=>{
         getPoolData()
-        getUserDataBatch()
+        // getUserDataBatch()
     },[])
 
     useEffect(()=>{
@@ -32,8 +32,10 @@ export default function Staking(){
 
     const getUserDataBatch = async() => {
         getStakingUserData()
-        getUserOwnedNftsData()
-        getUserStakedNftsData()
+        if(wallet.address!==undefined && poolData!=null){
+            getUserOwnedNftsData()
+            getUserStakedNftsData()
+        }
     }
 
     const getStakingUserData = async() => {

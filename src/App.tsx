@@ -5,10 +5,11 @@ import '@suiet/wallet-kit/style.css'
 import Home from './pages/home';
 import About from './pages/about'
 import Coinflip from './pages/coinflip';
-import Empty from './pages/empty';
+import DiceGame from './pages/dice';
 import Staking from './pages/staking'
 import Header from './components/header';
 import SideBar from './components/sidebar';
+import Empty from './pages/empty';
 
 import './assets/styles.scss'
 import { ProgramProvider } from './utils/ProgramProvider';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/staking" element={<Staking/>} />
             <Route path="/about" element={<Empty/>} />
             <Route path="/coinflip" element={<Coinflip/>}/>
+            <Route path="/dice" element={<Empty/>}></Route>
           </Routes>
         </Router>
       </ProgramProvider>

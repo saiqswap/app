@@ -14,6 +14,10 @@ export const COINFLIP_POOL = "0x00a5f667ca32c6986bb4aa16011cfa884214be8c6d459a0a
 export const COINFLIP_TOKEN_TYPE = SHS_TOKEN_CONTRACT_ADDRESS+"::suiheroes::SUIHEROES"
 export const COINFLIP_TOKEN_DECIMALS = 9
 
+export const DICE_WAGER_AMOUNT = [50, 100, 200, 500, 1000, 2000]
+export const DICE_TOKEN_TYPE = SHS_TOKEN_CONTRACT_ADDRESS+"::suiheroes::SUIHEROES"
+export const DICE_TOKEN_DECIMALS = 9
+
 export const openNotification = (type : 'success' | 'error' | 'info' | 'warning', title : string, description? : string) => {
     notification[type]({
         message : title, description : description, placement : 'topLeft'

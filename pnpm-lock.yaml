@@ -20,6 +20,7 @@ specifiers:
   node-sass: 6.0.1
   react: ^18.2.0
   react-confetti: ^6.1.0
+  react-dice-roll: ^1.2.2
   react-dom: ^18.2.0
   react-router-dom: ^6.10.0
   react-scripts: 5.0.1
@@ -47,6 +48,7 @@ dependencies:
   node-sass: 6.0.1
   react: 18.2.0
   react-confetti: 6.1.0_react@18.2.0
+  react-dice-roll: 1.2.2_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-router-dom: 6.10.0_biqbaboplfbrettd7655fr4n2y
   react-scripts: 5.0.1_sjfkabayigbylabecpaw72utcq
@@ -10555,6 +10557,16 @@ packages:
       - eslint
       - supports-color
       - vue-template-compiler
+    dev: false
+
+  /react-dice-roll/1.2.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-QNG+RVs3CymhTkNLwfDdJ93kL4vWO+luHkQAhuNxnus9jOFUZY54AJhlDa4y576S20oEuW47nO7HvEDCtST9wQ==}
+    peerDependencies:
+      react: ^16.13.1
+      react-dom: ^16.13.1
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-dom/18.2.0_react@18.2.0:

@@ -1,9 +1,8 @@
 import {FC, useCallback, ReactNode,} from 'react'
 import { ProgramContext } from './useProgram'
-import { useWallet, useSuiProvider, } from '@suiet/wallet-kit'
+import { useWallet, useSuiProvider } from '@suiet/wallet-kit'
 import { TransactionBlock } from '@mysten/sui.js'
 import { SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE, SHS_COINFLIP_CONTRACT_ADDRESS, COINFLIP_TOKEN_TYPE, COINFLIP_POOL, COINFLIP_TOKEN_DECIMALS} from './constants'
-
 export interface ProgramProviderProps{
     children : ReactNode
 }
@@ -44,12 +43,12 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             if(wallet.address===undefined){
                 return null
             }else{
-                let res = (await provider.getDynamicFields({parentId: STAKING_POOL})).data
-                let stakeDataObject = res.find((item)=>{return item.name.value===wallet.address})
-                if(stakeDataObject===undefined){
-                    return null
-                }
-                let stakeData = (await provider.getDynamicFieldObject({parentId: STAKING_POOL, name:stakeDataObject.name})).data
+                // let res = (await provider.getDynamicFields({parentId: STAKING_POOL})).data
+                // let stakeDataObject = res.find((item)=>{return item.name.value===wallet.address})
+                // if(stakeDataObject===undefined){
+                //     return null
+                // }
+                let stakeData = (await provider.getDynamicFieldObject({parentId: STAKING_POOL, name:{type:"address", value:wallet.address}})).data
                 if(stakeData?.content?.dataType==="moveObject"){
                     let current_time = (new Date()).getTime()
                     let uD = stakeData.content.fields
@@ -87,13 +86,23 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 return []
             }else{
                 let nfts : any[] = []
-                let listingNfts = (await provider.getDynamicFields({parentId: STAKING_POOL})).data
+                let listingNfts : any[] = []
+                let cursor = null
+                let res: any;
+                do{
+                    res = (await provider.getDynamicFields({parentId: STAKING_POOL, cursor: cursor, limit: 100}))
+                    console.log(res)
+                    listingNfts = listingNfts.concat(res.data)
+                    cursor = res.nextCursor
+                    // console.log(res.data)
+                }while(res!=null && res.hasNextPage);
+                console.log(listingNfts)
                 let filterListingNfts = listingNfts.filter((item)=>{return item.objectType===`${SHS_STAKING_CONTRACT_ADDRESS}::token_staking::Listing`})
-                
+                console.log(filterListingNfts)
                 for(let item of filterListingNfts){
-                    let listingNftDetail = (await provider.getDynamicFieldObject({parentId: STAKING_POOL, name: item.name})).data
+                    let listingNftDetail = (await provider.getObject({id: item.objectId, options: {showContent: true}})).data
                     try{
-                        if(listingNftDetail?.content?.dataType==="moveObject" && listingNftDetail.content.fields['owner']===wallet.address){
+                        if(listingNftDetail?.content?.dataType==="moveObject" && listingNftDetail.content.fields.owner===wallet.address){
                             let nft = (await provider.getDynamicFields({parentId: listingNftDetail.objectId})).data
                             if(nft.length===1){
                                 let nftDetail = (await provider.getObject({id: nft[0].objectId, options: {showContent: true}}))
@@ -213,10 +222,10 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const getUserCoinflipData = async() => {
         try{
             if(wallet.address===undefined) return null
-            let res = (await provider.getDynamicFields({parentId: COINFLIP_POOL})).data
-            let coinflipDataObject = res.find((item)=>{return item.name.value===wallet.address})
-            if(coinflipDataObject===undefined) return null
-            let coinflipData = (await provider.getDynamicFieldObject({parentId: COINFLIP_POOL, name: coinflipDataObject.name})).data
+            // let res = (await provider.getDynamicFields({parentId: COINFLIP_POOL})).data
+            // let coinflipDataObject = res.find((item)=>{return item.name.value===wallet.address})
+            // if(coinflipDataObject===undefined) return null
+            let coinflipData = (await provider.getDynamicFieldObject({parentId: COINFLIP_POOL, name: {type:"address", value: wallet.address}})).data
             if(coinflipData?.content?.dataType==="moveObject")
                 return coinflipData.content.fields
             else

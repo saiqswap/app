@@ -70,20 +70,20 @@ export default function Coinflip(){
                     <div className="btn-flip-wrapper">
                         <button className="btn-flip" onClick={async()=>{
                             try{
-                                // setGameStatus(1)
-                                // let res = await coinflip_flip(selectedSide, COINFLIP_WAGER_AMOUNT[selectedAmount])
-                                // if(res.events[0].parsedJson.result===1){
-                                //     setWinNumber(winNumber+1)
-                                // }else{
-                                //     setWinNumber(0)
-                                // }
-                                // setUserData({...res.events[0].parsedJson})
-                                let i = (new Date()).getTime() % 5;
-                                if(i>=0) setWinNumber(winNumber+1)
-                                else setWinNumber(0)
-                                console.log(winNumber)
-                                await sleep(1000)
-                                setUserData({select: 1, result: i>=0?1:0, amount: COINFLIP_WAGER_AMOUNT[selectedAmount]})
+                                setGameStatus(1)
+                                let res = await coinflip_flip(selectedSide, COINFLIP_WAGER_AMOUNT[selectedAmount])
+                                if(res.events[0].parsedJson.result===1){
+                                    setWinNumber(winNumber+1)
+                                }else{
+                                    setWinNumber(0)
+                                }
+                                setUserData({...res.events[0].parsedJson})
+                                // let i = (new Date()).getTime() % 5;
+                                // if(i>=0) setWinNumber(winNumber+1)
+                                // else setWinNumber(0)
+                                // console.log(winNumber)
+                                // await sleep(1000)
+                                // setUserData({select: 1, result: i>=0?1:0, amount: COINFLIP_WAGER_AMOUNT[selectedAmount]})
                             }catch(err: any){
                                 openNotification('error',err.message)
                                 setGameStatus(0)
@@ -121,7 +121,7 @@ export default function Coinflip(){
                     <div className="btn-flip-wrapper">
                         <button className="btn-flip" onClick={async()=>{
                             try{
-                                // await coinflip_claim()
+                                await coinflip_claim()
                                 setGameStatus(0)
                                 sleep(100)
                                 setUserData(null)
