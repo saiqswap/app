@@ -9,10 +9,10 @@ export const STAKING_POOL = "0xeff4df0e9f04dff8ab2cb36e07fb794600bd19843ff6862ac
 export const STAKING_NFT_TYPE = "0x2d4bd7e964d3dd4fc6a92bd03094fad90180bed911b6eb2f42d95bd4e29526a2::bluemove_nft::BlueMoveNFT"
 export const STAKING_TOKEN_TYPE = SHS_TOKEN_CONTRACT_ADDRESS+"::suiheroes::SUIHEROES"
 
-export const COINFLIP_WAGER_AMOUNT = [100, 200, 500, 1000, 2000, 5000]
-export const COINFLIP_POOL = "0xce16d809a38603344da19f15850af8577b925106ec5c7add563d4f4eded64b84"
-export const COINFLIP_TOKEN_TYPE = SHS_STAKING_CONTRACT_ADDRESS+"::shs::SHS"
-export const COINFLIP_TOKEN_DECIMALS = 2
+export const COINFLIP_WAGER_AMOUNT = [50, 100, 200, 500, 1000, 2000]
+export const COINFLIP_POOL = "0x00a5f667ca32c6986bb4aa16011cfa884214be8c6d459a0a719292a6920f3ade"
+export const COINFLIP_TOKEN_TYPE = SHS_TOKEN_CONTRACT_ADDRESS+"::suiheroes::SUIHEROES"
+export const COINFLIP_TOKEN_DECIMALS = 9
 
 export const openNotification = (type : 'success' | 'error' | 'info' | 'warning', title : string, description? : string) => {
     notification[type]({

@@ -3,6 +3,7 @@ import { useDebugValue, useEffect, useState } from "react"
 import { COINFLIP_TOKEN_DECIMALS, COINFLIP_TOKEN_TYPE, COINFLIP_WAGER_AMOUNT, openNotification, sleep } from "../utils/constants"
 import { useProgram } from "../utils/useProgram"
 import { useWallet } from "@suiet/wallet-kit"
+import Confetti from "react-confetti"
 
 export default function Coinflip(){
     const wallet = useWallet()
@@ -13,6 +14,8 @@ export default function Coinflip(){
     const [selectedAmount, setSelectedAmount] = useState(0)
     const [userData, setUserData] = useState<any>(null)
     const [tokenAmount, setTokenAmount] = useState(0)
+
+    const [winNumber, setWinNumber] = useState(0)
 
     useEffect(()=>{
         getUserData()
@@ -37,8 +40,9 @@ export default function Coinflip(){
     }
 
     return <div className="coinflip-dashboard">
+        {/* <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={200} wind={-0.01} recycle={false}/> */}
         <div className="dashboard-header">
-            <h2>COIN FLIP&nbsp;&nbsp;:&nbsp;&nbsp;<span style={{color: "#00ffff"}}>{Math.floor(tokenAmount/(10**COINFLIP_TOKEN_DECIMALS))}</span> SHS</h2>
+            <h2>COIN FLIP&nbsp;&nbsp;:&nbsp;&nbsp;<span style={{color: "#00ffff"}}>{Math.floor(tokenAmount/(10**COINFLIP_TOKEN_DECIMALS)*100)/100}</span> SHS</h2>
         </div>
         {
             gameStatus===0 ?
@@ -66,9 +70,20 @@ export default function Coinflip(){
                     <div className="btn-flip-wrapper">
                         <button className="btn-flip" onClick={async()=>{
                             try{
-                                setGameStatus(1)
-                                let res = await coinflip_flip(selectedSide, COINFLIP_WAGER_AMOUNT[selectedAmount])
-                                setUserData({...res.events[0].parsedJson})
+                                // setGameStatus(1)
+                                // let res = await coinflip_flip(selectedSide, COINFLIP_WAGER_AMOUNT[selectedAmount])
+                                // if(res.events[0].parsedJson.result===1){
+                                //     setWinNumber(winNumber+1)
+                                // }else{
+                                //     setWinNumber(0)
+                                // }
+                                // setUserData({...res.events[0].parsedJson})
+                                let i = (new Date()).getTime() % 5;
+                                if(i>=0) setWinNumber(winNumber+1)
+                                else setWinNumber(0)
+                                console.log(winNumber)
+                                await sleep(1000)
+                                setUserData({select: 1, result: i>=0?1:0, amount: COINFLIP_WAGER_AMOUNT[selectedAmount]})
                             }catch(err: any){
                                 openNotification('error',err.message)
                                 setGameStatus(0)
@@ -106,8 +121,9 @@ export default function Coinflip(){
                     <div className="btn-flip-wrapper">
                         <button className="btn-flip" onClick={async()=>{
                             try{
-                                await coinflip_claim()
+                                // await coinflip_claim()
                                 setGameStatus(0)
+                                sleep(100)
                                 setUserData(null)
                             }catch(err: any){
                                 openNotification('error', err.message)
