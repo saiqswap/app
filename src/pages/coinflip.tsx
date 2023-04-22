@@ -65,7 +65,7 @@ export default function Coinflip(){
                         })
                     }
                     </div>
-                    <h3 className="coinflip-gameboard-h3">Choose bet amount</h3>
+                    <h3 className="coinflip-gameboard-h3">Choose amount</h3>
                     <hr style={{width: "50%", color: "rgb(118, 139, 173)", margin: "10px auto", opacity: 0.25}}/>
                     <div className="btn-flip-wrapper">
                         <button className="btn-flip" onClick={async()=>{

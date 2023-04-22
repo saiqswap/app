@@ -2,7 +2,7 @@ import {FC, useCallback, ReactNode,} from 'react'
 import { ProgramContext } from './useProgram'
 import { useWallet, useSuiProvider } from '@suiet/wallet-kit'
 import { TransactionBlock } from '@mysten/sui.js'
-import { SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE, SHS_COINFLIP_CONTRACT_ADDRESS, COINFLIP_TOKEN_TYPE, COINFLIP_POOL, COINFLIP_TOKEN_DECIMALS} from './constants'
+import { SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE, SHS_COINFLIP_CONTRACT_ADDRESS, COINFLIP_TOKEN_TYPE, COINFLIP_POOL, COINFLIP_TOKEN_DECIMALS, DICE_POOL, DICE_TOKEN_TYPE, DICE_TOKEN_DECIMALS, SHS_DICE_CONTRACT_ADDRESS} from './constants'
 export interface ProgramProviderProps{
     children : ReactNode
 }
@@ -43,11 +43,6 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             if(wallet.address===undefined){
                 return null
             }else{
-                // let res = (await provider.getDynamicFields({parentId: STAKING_POOL})).data
-                // let stakeDataObject = res.find((item)=>{return item.name.value===wallet.address})
-                // if(stakeDataObject===undefined){
-                //     return null
-                // }
                 let stakeData = (await provider.getDynamicFieldObject({parentId: STAKING_POOL, name:{type:"address", value:wallet.address}})).data
                 if(stakeData?.content?.dataType==="moveObject"){
                     let current_time = (new Date()).getTime()
@@ -203,9 +198,6 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const getUserCoinflipData = async() => {
         try{
             if(wallet.address===undefined) return null
-            // let res = (await provider.getDynamicFields({parentId: COINFLIP_POOL})).data
-            // let coinflipDataObject = res.find((item)=>{return item.name.value===wallet.address})
-            // if(coinflipDataObject===undefined) return null
             let coinflipData = (await provider.getDynamicFieldObject({parentId: COINFLIP_POOL, name: {type:"address", value: wallet.address}})).data
             if(coinflipData?.content?.dataType==="moveObject")
                 return coinflipData.content.fields
@@ -260,10 +252,67 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx, options:{showEffects:true, showEvents: true, showObjectChanges: true, showBalanceChanges: true, showInput: true}})
     },[wallet])
 
+    const getUserDiceData = async() => {
+        try{
+            if(wallet.address===undefined) return null
+            let diceData = (await provider.getDynamicFieldObject({parentId: DICE_POOL, name: {type:"address", value: wallet.address}})).data
+            if(diceData?.content?.dataType==="moveObject")
+                return diceData.content.fields
+            else
+                return null
+        }catch(err){
+            return null
+        }
+    }
+
+    const dice_roll = useCallback(async(selectedCase: number, selectedAmount: number)=>{
+        let coins = (await provider.getCoins({
+            owner: wallet.address!,
+            coinType: DICE_TOKEN_TYPE
+        })).data
+        let amount = selectedAmount * (10 ** DICE_TOKEN_DECIMALS)
+        if(coins.length===0) throw new Error("No token");
+        let total=0;
+        for(let item of coins) total+=item.balance
+        if(total<amount) throw new Error("Not Enough Token")
+
+        const tx = new TransactionBlock()
+        if(coins.length>1)
+            tx.mergeCoins(tx.object(coins[0].coinObjectId), coins.slice(1,coins.length).map(item=>{return tx.object(item.coinObjectId)}))
+        tx.moveCall({
+            target: `${SHS_DICE_CONTRACT_ADDRESS}::dice_game::play_mut`,
+            typeArguments:[
+                DICE_TOKEN_TYPE
+            ],
+            arguments:[
+                tx.object(DICE_POOL),
+                tx.object(coins[0].coinObjectId),
+                tx.pure(amount),
+                tx.pure(selectedCase),
+                tx.object("0x06")
+            ]
+        })
+        return await wallet.signAndExecuteTransactionBlock({transactionBlock: tx, options:{showEffects:true, showEvents: true, showObjectChanges: true, showBalanceChanges: true, showInput: true}})
+    }, [wallet, provider])
+
+    const dice_claim = useCallback(async()=>{
+        const tx = new TransactionBlock()
+        tx.moveCall({
+            target: `${SHS_DICE_CONTRACT_ADDRESS}::dice_game::claim`,
+            typeArguments:[
+                DICE_TOKEN_TYPE
+            ],
+            arguments:[
+                tx.object(DICE_POOL)
+            ]
+        })
+        await wallet.signAndExecuteTransactionBlock({transactionBlock: tx, options:{showEffects:true, showEvents: true, showObjectChanges: true, showBalanceChanges: true, showInput: true}})
+    },[wallet])
+
     return <ProgramContext.Provider value={{
         getShsOwned,
 
-        // Staking Platform
+        // Staking
         getUserStakeData,
         getOwnedNfts,
         getStakedNfts,
@@ -274,9 +323,14 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         stake_nfts,
         unstake_nfts,
 
-        //Coinflip
+        // Coinflip
         getUserCoinflipData,
         coinflip_claim,
         coinflip_flip,
+
+        // Dice game
+        getUserDiceData,
+        dice_roll,
+        dice_claim,
     }}>{children}</ProgramContext.Provider>
 }

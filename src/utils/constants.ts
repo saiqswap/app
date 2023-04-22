@@ -2,6 +2,7 @@ import {notification} from 'antd'
 export const SHS_TOKEN_CONTRACT_ADDRESS = "0x1e0b1b701da0c8ddaf839bd83b99bc32706ee25d70b8d95c73fef844d742b331"
 export const SHS_STAKING_CONTRACT_ADDRESS = "0x949c7a805e0d8e35cb678b245d0983967516e6f69cfa71ab1b5785c8d74aa9af"
 export const SHS_COINFLIP_CONTRACT_ADDRESS = "0x8a5f95bdf4e37d14b938d6798dc46a1192c1bd1eb1422e328c9167612d3184a2"
+export const SHS_DICE_CONTRACT_ADDRESS = ""
 
 export const DECIMALS = 9
 
@@ -15,6 +16,7 @@ export const COINFLIP_TOKEN_TYPE = SHS_TOKEN_CONTRACT_ADDRESS+"::suiheroes::SUIH
 export const COINFLIP_TOKEN_DECIMALS = 9
 
 export const DICE_WAGER_AMOUNT = [50, 100, 200, 500, 1000, 2000]
+export const DICE_POOL = ''
 export const DICE_TOKEN_TYPE = SHS_TOKEN_CONTRACT_ADDRESS+"::suiheroes::SUIHEROES"
 export const DICE_TOKEN_DECIMALS = 9
 

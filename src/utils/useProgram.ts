@@ -18,6 +18,11 @@ export interface ProgramContextState{
     getUserCoinflipData() : Promise<any>;
     coinflip_flip(side: number, amount: number) : Promise<any>;
     coinflip_claim() : void;
+
+    // Dice game
+    getUserDiceData() : Promise<any>;
+    dice_roll(side: number, amount: number) : Promise<any>;
+    dice_claim() : void;
 }
 
 export const ProgramContext = createContext<ProgramContextState>({

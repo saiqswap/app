@@ -542,6 +542,8 @@ body{
 		width: 80%;
 		height: 560px;
 		max-width: 940px;
+		padding-left: 30px;
+		padding-right: 30px;
 
 		.dice-panel, .dice-option-panel{
 			flex-grow: 1;
@@ -551,14 +553,97 @@ body{
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+		}
+		.dice-panel{
+			width: 30%;
+			position: relative;
 
 			.one-dice{
 				flex-grow: 1;
 				height: 50%;
-
 				display: flex;
 				align-items: center;
 			}
+
+			.case-result{
+				position: absolute;
+				font-size: 20px;
+				font-family: "IndustryBlack";
+				color: rgb(118, 139, 173);
+				top: calc(50% - 13px);
+			}
+		}
+		.dice-option-panel{
+			width: 70%;
+			justify-content: center;
+			.case-select-panel{
+				width: 100%;
+				.btn-case{
+					position: relative;
+					border: 1px solid transparent;
+					border-radius: 8px;
+					color: rgb(118, 139, 173);
+					background-color: rgb(36, 47, 66);
+					font-size: 20px;
+					font-family: "IndustryBlack";
+					margin: 10px 20px;
+					width: 80px;
+					height: 62px;
+					transition: all 0.3s ease-in 0s;
+					&.active{
+						border: 1px solid rgb(228, 181, 26);
+						color: rgb(228, 181, 26);
+					}
+				}
+			}
+			.wager-select-panel{
+				width: 100%;
+				.btn-wager{
+					position: relative;
+					border: 1px solid transparent;
+					border-radius: 8px;
+					color: rgb(118, 139, 173);
+					background-color: rgb(36, 47, 66);
+					font-size: 20px;
+					font-family: "IndustryBlack";
+					margin: 10px 20px;
+					width: 150px;
+					height: 62px;
+					transition: all 0.3s ease-in 0s;
+					&.active{
+						border: 1px solid rgb(79, 255, 139);
+						color: rgb(79, 255, 139);
+					}
+				}
+			}
+			.dice-gameboard-h3{
+				color: #D0DAEB
+			}
+			.btn-roll-wrapper{
+				margin: 1em auto;
+				width: 100%;
+				text-align: center;
+				.btn-roll{
+					cursor: pointer;
+					width: 200px;
+					height: 60px;
+					border: 1px solid transparent;
+					border-radius: 8px;
+					color: rgb(118, 139, 173);
+					background-color: rgb(36, 47, 66);
+					font-size: 20px;
+					font-family: "IndustryBlack";
+	
+					&:hover{
+						background-color: rgb(118, 139, 173);
+						color: rgb(36, 47, 66);
+					}
+				}
+			}
+		}
+
+		.dice-rolling-panel{
+			
 		}
 	}
 }
