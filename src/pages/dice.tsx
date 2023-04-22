@@ -37,7 +37,7 @@ export default function DiceGame(){
         <div className="dice-gameboard">
            <div className="dice-panel">
                 <div className="one-dice">
-                    <Dice size={200} faces={FACES}/>
+                    <Dice size={200} rollingTime={10000} faceBg="RGB(1,1,1,0)"/>
                 </div>
                 <div className="one-dice">
                     <Dice size={200}/>

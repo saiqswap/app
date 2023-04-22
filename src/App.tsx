@@ -29,11 +29,11 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Empty/>}/>
-            <Route path="/home" element={<Empty/>}/>
+            <Route path="/home" element={<Home/>}/>
             <Route path="/staking" element={<Staking/>} />
             <Route path="/about" element={<Empty/>} />
             <Route path="/coinflip" element={<Coinflip/>}/>
-            <Route path="/dice" element={<Empty/>}></Route>
+            <Route path="/dice" element={<DiceGame/>}></Route>
           </Routes>
         </Router>
       </ProgramProvider>

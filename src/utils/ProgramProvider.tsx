@@ -86,31 +86,12 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 return []
             }else{
                 let nfts : any[] = []
-                let listingNfts : any[] = []
-                let cursor = null
-                let res: any;
-                do{
-                    res = (await provider.getDynamicFields({parentId: STAKING_POOL, cursor: cursor, limit: 100}))
-                    console.log(res)
-                    listingNfts = listingNfts.concat(res.data)
-                    cursor = res.nextCursor
-                    // console.log(res.data)
-                }while(res!=null && res.hasNextPage);
-                console.log(listingNfts)
-                let filterListingNfts = listingNfts.filter((item)=>{return item.objectType===`${SHS_STAKING_CONTRACT_ADDRESS}::token_staking::Listing`})
-                console.log(filterListingNfts)
-                for(let item of filterListingNfts){
-                    let listingNftDetail = (await provider.getObject({id: item.objectId, options: {showContent: true}})).data
-                    try{
-                        if(listingNftDetail?.content?.dataType==="moveObject" && listingNftDetail.content.fields.owner===wallet.address){
-                            let nft = (await provider.getDynamicFields({parentId: listingNftDetail.objectId})).data
-                            if(nft.length===1){
-                                let nftDetail = (await provider.getObject({id: nft[0].objectId, options: {showContent: true}}))
-                                nfts.push({listingId: listingNftDetail.objectId, objectId: nft[0].objectId, data:nftDetail.data?.content, selected: false})
-                            }
-                        }
-                    }catch(err){
-                    }
+                let stakeData = (await provider.getDynamicFieldObject({parentId: STAKING_POOL, name:{type:"address", value:wallet.address}})).data
+                let res = (await provider.getDynamicFields({parentId: stakeData?.objectId!}))
+                let listingNfts = res.data.filter((item)=>{return item.objectType===STAKING_NFT_TYPE})
+                for(let item of listingNfts){
+                    let nftDetail = (await provider.getObject({id: item.objectId, options: {showContent:true}}))
+                    nfts.push({id: item.objectId, data: nftDetail.data?.content, selected: false})
                 }
                 return nfts
             }

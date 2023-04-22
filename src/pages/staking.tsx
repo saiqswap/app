@@ -91,7 +91,7 @@ export default function Staking(){
         try{
             let nfts = isAll ? stakedNfts : stakedNfts.filter((item)=>{return item.selected})
             if(nfts.length===0) throw new Error("No NFT selected")
-            await unstake_nfts(nfts.map((item)=>{return item.listingId}))
+            await unstake_nfts(nfts.map((item)=>{return item.id}))
             openNotification('success', 'Unstake Success!')
             await sleep(2000)
             getUserDataBatch()

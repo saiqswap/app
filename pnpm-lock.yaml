@@ -26,6 +26,7 @@ specifiers:
   react-scripts: 5.0.1
   react-slick: ^0.29.0
   slick-carousel: ^1.8.1
+  swiper: ^9.2.4
   typescript: ^4.9.5
   web-vitals: ^2.1.4
 
@@ -54,6 +55,7 @@ dependencies:
   react-scripts: 5.0.1_sjfkabayigbylabecpaw72utcq
   react-slick: 0.29.0_biqbaboplfbrettd7655fr4n2y
   slick-carousel: 1.8.1
+  swiper: 9.2.4
   typescript: 4.9.5
   web-vitals: 2.1.4
 
@@ -11543,6 +11545,10 @@ packages:
       tweetnacl: 0.14.5
     dev: false
 
+  /ssr-window/4.0.2:
+    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
+    dev: false
+
   /stable/0.1.8:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
     deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
@@ -11870,6 +11876,13 @@ packages:
       csso: 4.2.0
       picocolors: 1.0.0
       stable: 0.1.8
+    dev: false
+
+  /swiper/9.2.4:
+    resolution: {integrity: sha512-L7y3K/iiMXNYQ94FbfcJn7jex4QPnS4+voXGupTdC+UHW4XrR40QDdm4c9hXJ+Br0Il7PP0vP1W3goM9/Ly6Sg==}
+    engines: {node: '>= 4.7.0'}
+    dependencies:
+      ssr-window: 4.0.2
     dev: false
 
   /swr/1.3.0_react@18.2.0:
