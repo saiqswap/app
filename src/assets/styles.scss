@@ -50,6 +50,353 @@ body{
     font-family: "IndustryMedium" !important;
 }
 
+.home-dashboard{
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding-top: 100px;
+	padding-left: 65px;
+	color: white;
+	width: calc(100% - 65px);
+
+	.home-slider{
+		width: 80%;
+		.one-slider{
+			width: 80%;
+			height: 370px;
+			display: inline-block;
+			border-radius: 12px;
+			background-repeat: no-repeat;
+			user-select: none;
+			
+			&.slider-1{
+				background-image: url('./images/sliders/slider1/background.jpg');
+				background-size: 100% 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+
+				.nft-slider-wrapper{
+					width: 100%;
+					
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					.nft-slider{
+						width: 80%;
+						.nft-image{	
+							img{
+								margin: 0 auto;
+								border-radius: 30px;
+								height: 250px;
+
+								@media (max-width: 480px) {
+									height: 200px
+								}
+							}
+						}
+					}
+				}
+			}
+
+			&.slider-2{
+				background-image: url('./images/sliders/slider2/background.png');
+				background-size: 100% 100%;
+
+				.line-1{
+					margin-left: 50px;
+					margin-top: 70px;
+					text-align: left;
+					h2{
+
+					}
+					h1{
+						color:rgb(41, 216, 88);
+					}
+				}
+				.line-2{
+					margin-left: 50px;
+					text-align: left;
+
+					@media (max-width: 560px) {
+						display: none;
+					}
+				}
+				.line-3{
+					margin-left: 50px;
+					margin-top: 40px;
+					text-align: left;
+				}
+			}
+
+			&.slider-3{
+				background-color: #668A7E;
+				background-image: url('./images/sliders/slider3/background.gif');
+				background-size: auto 100%;
+
+				.line-1{
+					margin-right: 50px;
+					margin-top: 50px;
+					text-align: right;
+					h2{
+						margin:0;
+					}
+					h1{
+						font-size: 80px;
+						margin: 0;
+						color:rgb(41, 216, 88);
+					}
+				}
+				.line-2{
+					margin-right: 50px;
+					text-align: right;
+				}
+				.line-3{
+					margin-right: 50px;
+					text-align: right;
+				}
+			}
+
+			&.slider-4{
+				background-image: url('./images/sliders/slider4/background.jpg');
+				background-size: 100% 100%;
+			}
+		}
+	}
+
+	.home-roadmap{
+		margin-bottom: 30px;
+		.home-roadmap-banner{
+			margin-top: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.dot{
+				width: 10px;
+				height: 10px;
+				border-radius: 100%;
+				background-color: #3ba0d3;
+			}
+			p{
+				margin:2px;
+				font-family: "IndustryMedium";
+			}
+		}
+		.home-roadmap-header{
+			margin:0px auto 20px;
+			width: 100%;
+			text-align: center;
+			p{
+				margin:0;
+				font-size: 60px;
+				span{
+					color: #3ba0d3;
+				}
+			}
+		}
+		.home-roadmap-content{
+			width: 90%;
+			margin: 0 auto;
+			.grid-container{
+				display: grid;
+				grid-template-columns: auto auto auto;
+				gap: 20px;
+				
+				@media(max-width: 1330px){
+					grid-template-columns: auto auto;
+				}
+				@media(max-width: 840px){
+					grid-template-columns: auto;
+				}
+			}
+			.home-roadmap-piece{
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				cursor: pointer;
+			
+				.home-roadmap-piece-no{
+					border: 1px solid #3ba0d3;
+					color: #3ba0d3;
+					// padding: 5px 30px;
+					// padding: 20px auto;
+					min-width: 70px;
+					text-align: center;
+					p{
+						margin:5px 0;
+						font-size: 40px;
+						font-weight: 900;
+					}
+				}
+				.home-roadmap-piece-content{
+					display: flex;
+					align-items: start;
+					flex-direction: column;
+					.home-roadmap-piece-content-main{
+						text-align: left;
+						font-family: "IndustryMedium";
+						margin: 0;
+						font-weight: 600;
+					}
+					.home-roadmap-piece-content-details{
+						text-align: left;
+						font-family: "IndustryMedium";
+						margin: 0;
+						margin-top: 0.5em;
+						font-size: 12px;
+						color: rgba(255,255,255,0.48)
+					}
+				}
+			}
+		}
+	}
+
+	.home-partner{
+		width: 100%;
+		background-image: url('./images/bg.png');
+		background-size: 100% 100%;
+		.home-partner-banner{
+			margin-top: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.dot{
+				width: 10px;
+				height: 10px;
+				border-radius: 100%;
+				background-color: #3ba0d3;
+			}
+			p{
+				margin:2px;
+				font-family: "IndustryMedium";
+			}
+		}
+		.home-partner-header{
+			margin:0px auto 20px;
+			width: 100%;
+			text-align: center;
+			p{
+				margin:0;
+				font-size: 60px;
+				span{
+					color: #3ba0d3;
+				}
+			}
+		}
+		.home-partner-content{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-grow: 1 1;
+			
+
+			@media (max-width: 900px) {
+				flex-direction: column;
+			}
+
+			.home-partner-content-description{
+				width: 50%;
+				text-align: left;
+				margin-left: 50px;
+
+				@media (max-width: 900px) {
+					order: 2;
+					width: 80%;
+					margin-left: 0;
+				}
+			}
+			.home-partner-content-image-wrapper{
+				width: 50%;
+				@media (max-width: 900px) {
+					order: 1
+				}
+				
+				img{
+					width: 100%;
+					max-width: 500px;
+				}
+			}
+		}
+	}
+
+	.home-community{
+		.home-community-banner{
+			font-size: 80px;
+		}
+		.home-community-header{
+			margin:0px auto 20px;
+			width: 100%;
+			text-align: center;
+			p{
+				margin:0;
+				font-size: 60px;
+				span{
+					color: #3ba0d3;
+				}
+			}
+		}
+		.home-community-content{
+			margin-top: 80px;
+			margin-bottom: 40px;
+			display: flex;
+			gap: 40px;
+			@media (max-width: 660px) {
+				flex-direction: column;
+				align-items: center;
+			}
+			.btn-community{
+				width: 250px;
+				height: 60px;
+				border-radius: 25px;
+				font-size: 20px;
+				font-family: "IndustryBold";
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				@media (max-width: 660px) {
+					width: 80%;
+				}
+			}
+			.btn-twitter{
+				background: none;
+				color: white;
+				border: 2px solid white;
+
+				&:hover{
+					border: none;
+					color: white;
+					background-color: #3ba0d3;
+				}
+			}
+			.btn-discord{
+				border: none;
+				color: white;
+				background-color: #3ba0d3;
+
+				&:hover{
+					background: none;
+					color: white;
+					border: 2px solid white;
+				}
+			}
+		}
+	}
+
+	.home-footer{
+		width: 100%;
+		height:40px;
+		p{
+			font-family: "IndustryMedium";
+			font-size: 12px;
+		}
+	}
+}
+
 .staking-dashboard{
 	text-align: center;
 	display: flex;
@@ -643,8 +990,36 @@ body{
 		}
 
 		.dice-rolling-panel{
-			
+			display: flex;
+			gap : 100px;
 		}
+		.dice-gameboard-h3{
+			color: #D0DAEB
+		}
+		.btn-roll-wrapper{
+			margin: 1em auto;
+			width: 100%;
+			text-align: center;
+			button{
+				cursor: pointer;
+				width: 200px;
+				height: 60px;
+				border: 1px solid transparent;
+				border-radius: 8px;
+				color: rgb(118, 139, 173);
+				background-color: rgb(36, 47, 66);
+				font-size: 20px;
+				font-family: "IndustryBlack";
+
+				&:hover{
+					background-color: rgb(118, 139, 173);
+					color: rgb(36, 47, 66);
+				}
+			}
+		}
+	}
+	.one-panel{
+		flex-direction: column !important;
 	}
 }
 

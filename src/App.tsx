@@ -15,29 +15,35 @@ import './assets/styles.scss'
 import { ProgramProvider } from './utils/ProgramProvider';
 
 function App() {
-  const customChain : Chain = {
+  const suietChain : Chain = {
     id: "testnet",
     name: "testnet",
     rpcUrl: "https://testnet.suiet.app/"
   }  
 
+  const brightChain : Chain = {
+    id: "testnet",
+    name: "testnet",
+    rpcUrl: "https://sui.testnet.brightlystake.com"
+  }
+
   return (
-    <WalletProvider chains={[SuiTestnetChain, customChain]}>
-      <ProgramProvider>
-        <Header/>
-        <SideBar/>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Empty/>}/>
-            <Route path="/home" element={<Home/>}/>
-            <Route path="/staking" element={<Staking/>} />
-            <Route path="/about" element={<Empty/>} />
-            <Route path="/coinflip" element={<Coinflip/>}/>
-            <Route path="/dice" element={<DiceGame/>}></Route>
-          </Routes>
-        </Router>
-      </ProgramProvider>
-    </WalletProvider>
+      <WalletProvider chains={[SuiTestnetChain]}>
+        <ProgramProvider>
+          <Header/>
+          <SideBar/>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path="/home" element={<Home/>}/>
+              <Route path="/staking" element={<Staking/>} />
+              <Route path="/about" element={<Empty/>} />
+              <Route path="/coinflip" element={<Coinflip/>}/>
+              <Route path="/dice" element={<DiceGame/>}></Route>
+            </Routes>
+          </Router>
+        </ProgramProvider>
+      </WalletProvider>
   );
 }
 

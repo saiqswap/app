@@ -59,9 +59,7 @@ export default function Coinflip(){
                     <div className="wager-select-panel">
                     {
                         COINFLIP_WAGER_AMOUNT.map((item,idx)=>{
-                            return <button key={idx} type="button" className={"btn-wager "+(selectedAmount===idx?"active":"")} onClick={()=>{setSelectedAmount(idx)}}>
-                                {item+" SHS"}
-                            </button>
+                            return <button key={idx} type="button" className={"btn-wager "+(selectedAmount===idx?"active":"")} onClick={()=>{setSelectedAmount(idx)}}>{item+" SHS"}</button>
                         })
                     }
                     </div>
@@ -123,7 +121,7 @@ export default function Coinflip(){
                             try{
                                 await coinflip_claim()
                                 setGameStatus(0)
-                                sleep(100)
+                                await sleep(100)
                                 setUserData(null)
                             }catch(err: any){
                                 openNotification('error', err.message)

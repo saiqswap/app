@@ -256,6 +256,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         try{
             if(wallet.address===undefined) return null
             let diceData = (await provider.getDynamicFieldObject({parentId: DICE_POOL, name: {type:"address", value: wallet.address}})).data
+            console.log(diceData)
             if(diceData?.content?.dataType==="moveObject")
                 return diceData.content.fields
             else
@@ -280,7 +281,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         if(coins.length>1)
             tx.mergeCoins(tx.object(coins[0].coinObjectId), coins.slice(1,coins.length).map(item=>{return tx.object(item.coinObjectId)}))
         tx.moveCall({
-            target: `${SHS_DICE_CONTRACT_ADDRESS}::dice_game::play_mut`,
+            target: `${SHS_DICE_CONTRACT_ADDRESS}::dicegame::play_mut`,
             typeArguments:[
                 DICE_TOKEN_TYPE
             ],
@@ -298,7 +299,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const dice_claim = useCallback(async()=>{
         const tx = new TransactionBlock()
         tx.moveCall({
-            target: `${SHS_DICE_CONTRACT_ADDRESS}::dice_game::claim`,
+            target: `${SHS_DICE_CONTRACT_ADDRESS}::dicegame::claim`,
             typeArguments:[
                 DICE_TOKEN_TYPE
             ],
