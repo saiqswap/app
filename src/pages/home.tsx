@@ -1,8 +1,10 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, IconButton } from "@mui/material";
+import { ArrowBackIosNewRounded as ArrowBackIcon, ArrowForwardIosRounded as ArrowForwardIcon } from '@mui/icons-material'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'react-slick'
 import { FaDiscord, FaTwitter } from 'react-icons/fa'
+import { RoadmapContent } from "../utils/constants";
 
 import USER1_IMG from '../assets/images/user/user1.jpeg'
 import USER2_IMG from '../assets/images/user/user2.jpeg'
@@ -17,7 +19,13 @@ import USER10_IMG from '../assets/images/user/user10.jpeg'
 import USER11_IMG from '../assets/images/user/user11.jpeg'
 import USER12_IMG from '../assets/images/user/user12.jpeg'
 import PARTNER_IMG from '../assets/images/partnerMix.png'
-import { RoadmapContent } from "../utils/constants";
+
+import COINFLIP_IMG from '../assets/images/originals/coinflip.png'
+import CRASH_IMG from '../assets/images/originals/crash.png'
+import DREAMTOWER_IMG from '../assets/images/originals/dreamtower.png'
+import JACKPOT_IMG from '../assets/images/originals/jackpot.png'
+import PLINKO_IMG from '../assets/images/originals/plinko.png'
+import { ReactComponentElement, ReactElement, useRef } from "react";
 
 const images = [
     USER1_IMG,
@@ -34,7 +42,15 @@ const images = [
     USER12_IMG,
 ];
 
+const ORIGINALS_PANEL = [
+    {title:"STAKING", logo:JACKPOT_IMG, src:"/staking"},
+    {title:"COIN FLIP", logo:COINFLIP_IMG, src:"/coinflip"},
+    {title:"DICE", logo:CRASH_IMG,src:"/dice"},
+    {title:"TOWER", logo:DREAMTOWER_IMG,src:""},
+]
+
 export default function Home(){
+    const originalSliderRef = useRef<Slider>(null)
     const settings = {
         arrows: false,
         dots: false,
@@ -47,36 +63,33 @@ export default function Home(){
     }
 
     const settingSlider1 = {
-        arrows: false,
+        arrows: true,
         infinite: true,
         speed: 100,
         // centerMode: true,
         slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToScroll: 1,
         autoplay: true,
         // pauseOnFocus: true,
         responsive:[
-            {
-                breakpoint: 1660,
-                settings:{
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                }
-            },
-            {
-                breakpoint: 1250,
-                settings:{
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                }
-            },
-            {
-                breakpoint: 866,
-                settings:{
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            },
+            {breakpoint: 1660,settings:{slidesToShow: 3,}},
+            {breakpoint: 1250,settings:{slidesToShow: 2,}},
+            {breakpoint: 866,settings:{slidesToShow: 1,}},
+        ]
+    }
+
+    const settingOriginalsSlider = {
+        arrows:false,
+        infinite: false,
+        dots: false,
+        slidesToShow: 4,
+        slidesToScroll:1,
+        draggable: false,
+        speed:100,
+        responsive:[
+            {breakpoint: 1350, settings:{slidesToShow:3}},
+            {breakpoint: 1024, settings:{slidesToShow:2}},
+            {breakpoint: 658, settings:{slidesToShow:1}},
         ]
     }
 
@@ -96,17 +109,17 @@ export default function Home(){
             </div>
             <div className="one-slider slider-2">
                 <div className="line-1">
-                    <h2>YOU CAN GET REWARDS FROM</h2>
+                    {/* <h2>YOU CAN GET REWARDS FROM</h2> */}
                     <h1>SUIHEROES STAKING</h1>
                 </div>
                 <div className="line-2">
-                    <p>You stake SHS token and Suiheroes NFT and then get rewards</p>
-                    <p>More SHS and Suiheroes you stake, more rewards you will get</p>
+                    <p>Stake $SHS  TOKEN with SUIHEROES NFT to get  SUPERCHARGED APY rewards.</p>
+                    <p>The more the NFT's you STAKE the more your APY.</p>
                 </div>
                 <div className="line-3">
                     <Button variant="contained" color="success" style={{fontFamily: "IndustryBlack"}} onClick={()=>{
                         window.location.href = "/staking"
-                    }}>PLAY TO EARN</Button>
+                    }}>STAKE NOW</Button>
                 </div>
             </div>
             {/* <div className="one-slider slider-3">
@@ -130,7 +143,30 @@ export default function Home(){
                 </div>
             </div> */}
         </Slider>
-        <div className="home-roadmap">
+        <div className="home-origin">
+            <div className="home-origin-header">
+                <h3>SUIHEROES ORIGINALS</h3>
+                <div className="arrow-buttons">
+                    <IconButton size="small" onClick={()=>{originalSliderRef.current?.slickPrev()}}><ArrowBackIcon/></IconButton>
+                    <IconButton size="small" onClick={()=>{originalSliderRef.current?.slickNext()}}><ArrowForwardIcon/></IconButton>
+                </div>
+            </div>
+            <Slider ref={originalSliderRef} {...settingOriginalsSlider} className="home-origin-body">
+            {
+                ORIGINALS_PANEL.map((item,idx)=>{
+                    return <div key={idx} className="home-origin-one-wrapper" onClick={()=>{window.location.href=item.src}}>
+                        <img src={item.logo} width="90%" height="auto" alt={item.title}/>
+                        <div className="one-origin-description">
+                            <p>SUIHEROES ORIGINALS</p>
+                            <h3>{item.title}</h3>
+                        </div>
+                    </div>
+                })
+            }
+            </Slider>
+
+        </div>
+        {/* <div className="home-roadmap">
             <div className="home-roadmap-banner">
                 <div className="dot"/><p>Our Roadmap</p><div className="dot"/>
             </div>
@@ -152,8 +188,8 @@ export default function Home(){
                 }
                 </div>
             </div>
-        </div>
-        <div className="home-partner">
+        </div> */}
+        {/* <div className="home-partner">
             <div className="home-partner-banner">
                 <div className="dot"/><p>Our Partner</p><div className="dot"/>
             </div>
@@ -169,7 +205,7 @@ export default function Home(){
                     <img src={PARTNER_IMG} alt="PARTNERS"/>
                 </div>
             </div>
-        </div>
+        </div> */}
         <div className="home-community">
             <div className="home-community-banner">
                 🤙

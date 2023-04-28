@@ -78,7 +78,9 @@ body{
 				align-items: center;
 				justify-content: center;
 				flex-direction: column;
-
+				h2{
+					color:rgb(180, 188, 202);
+				}
 				.nft-slider-wrapper{
 					width: 100%;
 					
@@ -118,17 +120,52 @@ body{
 					}
 				}
 				.line-2{
+					padding-top: 20px;
+					color:rgb(180, 188, 202);
 					margin-left: 50px;
 					text-align: left;
-
-					@media (max-width: 560px) {
-						display: none;
-					}
 				}
 				.line-3{
 					margin-left: 50px;
 					margin-top: 40px;
 					text-align: left;
+				}
+
+				@media (max-width:600px) {
+					.line-1{
+						width: 80%;
+						text-align: center;
+						margin: 70px auto 20px;
+						h1{
+							font-size: 24px;
+						}
+					}
+					.line-2{
+						width: 100%;
+						text-align: center;
+						margin: 20px auto 20px;
+						p{
+							padding: 0 20px;
+						}
+					}
+					.line-3{
+						width: 100%;
+						text-align: center;
+						margin: 50px auto 0;
+					}
+				}
+
+				@media (max-width:518px) {
+					.line-1{
+						h1{
+							font-size: 20px;
+						}
+					}
+					.line-2{
+						p{
+							font-size: 14px;
+						}
+					}
 				}
 			}
 
@@ -163,6 +200,74 @@ body{
 			&.slider-4{
 				background-image: url('./images/sliders/slider4/background.jpg');
 				background-size: 100% 100%;
+			}
+		}
+	}
+
+	.home-origin{
+		margin-top: 30px;
+		width: 80%;
+		.home-origin-header{
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap:10px;
+			h3{
+				color:rgb(180, 188, 202);
+				font-family: "IndustryMedium";
+				margin: 0;
+				font-size: 20px;
+				text-align: left;
+			}
+			.arrow-buttons{
+				display: flex;
+				gap: 20px;
+				button{
+					border: none;
+					border-radius: 4px;
+					background: rgb(36, 47, 66);
+					color: rgb(180, 188, 202);
+				}
+			}
+		}
+		.home-origin-body{
+			width: 100%;
+			margin-top: 25px;
+			cursor: pointer;
+			user-select: none;
+
+			.slick-track{
+				display: flex;
+				align-items: baseline;
+			}
+			.home-origin-one-wrapper{
+				position: relative;
+				&:hover{
+					transform: translate(0, -10px);
+					transition: all 0.5s ease 0s;
+				}
+
+				img{
+					width: 95%;
+					height: auto;
+					margin: 0 auto
+				}
+
+				.one-origin-description{
+					position: absolute;
+					top: 70%;
+					left: 10%;
+					text-align: left;
+					p{
+						margin:0;
+						font-size: 12px;
+						font-family: "IndustryMedium";
+					}
+					h3{
+						margin:0;
+					}
+				}
 			}
 		}
 	}
@@ -324,6 +429,12 @@ body{
 	}
 
 	.home-community{
+		margin-top: 30px;
+		padding-top: 30px;
+		width: 100%;
+		background-image: url('./images/bg.png');
+		background-size: 100% 100%;
+		
 		.home-community-banner{
 			font-size: 80px;
 		}
@@ -340,9 +451,11 @@ body{
 			}
 		}
 		.home-community-content{
+			
 			margin-top: 80px;
 			margin-bottom: 40px;
 			display: flex;
+			justify-content: center;
 			gap: 40px;
 			@media (max-width: 660px) {
 				flex-direction: column;
@@ -714,6 +827,10 @@ body{
 			gap: 60px;
 			margin-top: 20px;
 
+			@media(max-width: 560px){
+				gap:30px;
+			}
+
 			.coin-select-button{
 				cursor: pointer;
 				display: flex;
@@ -867,12 +984,11 @@ body{
 	justify-content: center;
 	flex-direction: column;
 	padding-top: 70px;
-	padding-left: 80px;
+	padding-left: 57px;
 
 	.dashboard-header{
-		width: 100%;
-		display: flex;
-		justify-content: left;
+		padding-left: 30px;
+		text-align: left;
 
 		h2{
 			color: rgb(118, 139, 173);
@@ -882,7 +998,7 @@ body{
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin : 20px;
+		// margin : 20px;
 		border-radius: 16px;
 		border: 2px solid rgb(26, 41, 61);
 		background: linear-gradient(268.42deg, rgb(26, 41, 61) 0%, rgba(26, 41, 61, 0) 100.18%);
@@ -894,7 +1010,6 @@ body{
 
 		.dice-panel, .dice-option-panel{
 			flex-grow: 1;
-			width: 50%;
 			height: 100%;
 		
 			display: flex;
@@ -910,6 +1025,14 @@ body{
 				height: 50%;
 				display: flex;
 				align-items: center;
+				font-size: 180px;
+				font-family: "IndustryMedium";
+			}
+			.first-dice{
+				color:rgb(41, 216, 88);
+			}
+			.second-dice{
+				color:#3ba0d3
 			}
 
 			.case-result{
@@ -925,6 +1048,7 @@ body{
 			justify-content: center;
 			.case-select-panel{
 				width: 100%;
+				max-width: 400px;
 				.btn-case{
 					position: relative;
 					border: 1px solid transparent;
@@ -945,6 +1069,7 @@ body{
 			}
 			.wager-select-panel{
 				width: 100%;
+				max-width: 400px;
 				.btn-wager{
 					position: relative;
 					border: 1px solid transparent;
@@ -964,13 +1089,16 @@ body{
 				}
 			}
 			.dice-gameboard-h3{
-				color: #D0DAEB
+				color: #D0DAEB;
+				@media (max-width: 470px) {
+					margin: 5px;
+				}
 			}
 			.btn-roll-wrapper{
 				margin: 1em auto;
 				width: 100%;
 				text-align: center;
-				.btn-roll{
+				button{
 					cursor: pointer;
 					width: 200px;
 					height: 60px;
@@ -985,41 +1113,75 @@ body{
 						background-color: rgb(118, 139, 173);
 						color: rgb(36, 47, 66);
 					}
+					
+					&.btn-redeem{
+						border: 1px solid rgb(79, 255, 139);
+						color: rgb(41, 216, 88);
+
+						&:hover{
+							background: linear-gradient(90deg, rgba(79, 255, 139, 0.2) 0%, rgba(79, 255, 139, 0.05) 100%) !important;
+						}
+					}
+				}
+			}
+		}
+		.dice-result{
+			.dice-result-banner{
+				font-size: 80px;
+			}
+			.dice-result-description{
+				font-size: 60px;
+				font-family: "IndustryMedium";
+				color:rgb(180, 188, 202);
+
+				&.win-result{
+					color:rgb(41, 216, 88);
 				}
 			}
 		}
 
-		.dice-rolling-panel{
-			display: flex;
-			gap : 100px;
-		}
-		.dice-gameboard-h3{
-			color: #D0DAEB
-		}
-		.btn-roll-wrapper{
-			margin: 1em auto;
-			width: 100%;
-			text-align: center;
-			button{
-				cursor: pointer;
-				width: 200px;
-				height: 60px;
-				border: 1px solid transparent;
-				border-radius: 8px;
-				color: rgb(118, 139, 173);
-				background-color: rgb(36, 47, 66);
-				font-size: 20px;
-				font-family: "IndustryBlack";
+		@media (max-width: 770px) {
+			flex-direction: column;
+			background: linear-gradient(to top , rgb(26, 41, 61) 0%, rgba(26, 41, 61, 0) 100.18%);
+			.dice-panel{
+				width: 100%;
+				flex-direction: row;
+				justify-content: center;
+				.one-dice{
+					justify-content: center;
+					font-size: 100px;
+				}
+			}
+			.dice-option-panel{
+				width:100%;
+				
+				button{
+					height: 40px !important;
+					font-size: 14px !important;
+				}
 
-				&:hover{
-					background-color: rgb(118, 139, 173);
-					color: rgb(36, 47, 66);
+				.case-select-panel{
+					display: flex;
+					justify-content: space-between;
+					.btn-case{
+						font-size: 14px;
+					}
+				}
+
+				.wager-select-panel{
+					.btn-wager{
+						margin: 10px 10px;
+						width: 90px;
+					}
+				}
+			}
+			.dice-result{
+				button{
+					height: 60px !important;
+					font-size: 20px !important;
 				}
 			}
 		}
-	}
-	.one-panel{
-		flex-direction: column !important;
 	}
 }
 

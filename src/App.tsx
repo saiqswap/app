@@ -28,7 +28,7 @@ function App() {
   }
 
   return (
-      <WalletProvider chains={[SuiTestnetChain]}>
+      <WalletProvider chains={[SuiTestnetChain]} autoConnect={true}>
         <ProgramProvider>
           <Header/>
           <SideBar/>
