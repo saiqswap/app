@@ -1,10 +1,10 @@
-import { Box, Button, Grid, IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { ArrowBackIosNewRounded as ArrowBackIcon, ArrowForwardIosRounded as ArrowForwardIcon } from '@mui/icons-material'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'react-slick'
 import { FaDiscord, FaTwitter } from 'react-icons/fa'
-import { RoadmapContent } from "../utils/constants";
+// import { RoadmapContent } from "../utils/constants";
 
 import USER1_IMG from '../assets/images/user/user1.jpeg'
 import USER2_IMG from '../assets/images/user/user2.jpeg'
@@ -18,14 +18,15 @@ import USER9_IMG from '../assets/images/user/user9.jpeg'
 import USER10_IMG from '../assets/images/user/user10.jpeg'
 import USER11_IMG from '../assets/images/user/user11.jpeg'
 import USER12_IMG from '../assets/images/user/user12.jpeg'
-import PARTNER_IMG from '../assets/images/partnerMix.png'
+// import PARTNER_IMG from '../assets/images/partnerMix.png'
 
-import COINFLIP_IMG from '../assets/images/originals/coinflip.png'
-import CRASH_IMG from '../assets/images/originals/crash.png'
-import DREAMTOWER_IMG from '../assets/images/originals/dreamtower.png'
-import JACKPOT_IMG from '../assets/images/originals/jackpot.png'
-import PLINKO_IMG from '../assets/images/originals/plinko.png'
-import { ReactComponentElement, ReactElement, useRef } from "react";
+import COINFLIP_IMG from '../assets/images/originals/COINFLIP.png'
+import DICE_IMG from '../assets/images/originals/DICE.png'
+import TOWER_IMG from '../assets/images/originals/TOWER.png'
+import LUCKY_WHEEL_IMG from '../assets/images/originals/LUCKY_WHEEL.png'
+// import JACKPOT_IMG from '../assets/images/originals/jackpot.png'
+// import PLINKO_IMG from '../assets/images/originals/plinko.png'
+import { useRef } from "react";
 
 const images = [
     USER1_IMG,
@@ -43,10 +44,10 @@ const images = [
 ];
 
 const ORIGINALS_PANEL = [
-    {title:"STAKING", logo:JACKPOT_IMG, src:"/staking"},
     {title:"COIN FLIP", logo:COINFLIP_IMG, src:"/coinflip"},
-    {title:"DICE", logo:CRASH_IMG,src:"/dice"},
-    {title:"TOWER", logo:DREAMTOWER_IMG,src:""},
+    {title:"DICE", logo:DICE_IMG,src:"/dice"},
+    {title:"TOWER", logo:TOWER_IMG,src:"/tower"},
+    {title:"LUCKY WHEEL", logo: LUCKY_WHEEL_IMG, src:"/wheel"}
 ]
 
 export default function Home(){
@@ -156,15 +157,23 @@ export default function Home(){
                 ORIGINALS_PANEL.map((item,idx)=>{
                     return <div key={idx} className="home-origin-one-wrapper" onClick={()=>{window.location.href=item.src}}>
                         <img src={item.logo} width="90%" height="auto" alt={item.title}/>
-                        <div className="one-origin-description">
+                        {/* <div className="one-origin-description">
                             <p>SUIHEROES ORIGINALS</p>
                             <h3>{item.title}</h3>
-                        </div>
+                        </div> */}
                     </div>
                 })
             }
             </Slider>
-
+        </div>
+        <div className="home-disclaimer">
+            <div className="home-disclaimer-header">Disclaimer</div>
+            <div className="home-disclaimer-content">
+                <p>This website offers gaming with risk experience. To be a user of our platform you must be 18 y.o</p>
+                <p>We are not responsible for any violation of your local laws related to i-gaming.</p>
+                <p>To ensure gambling online is legal in your jurisdiction, please consult your local laws and regulations before playing on <span>SUIHEROES</span> platform.</p>
+                <p>Play responsibly and have fun</p>
+            </div>
         </div>
         {/* <div className="home-roadmap">
             <div className="home-roadmap-banner">

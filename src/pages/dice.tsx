@@ -14,8 +14,6 @@ export default function DiceGame(){
     const [selectedCase, setSelectedCase] = useState(1)
     const [selectedAmount, setSelectedAmount] = useState(0)
     const [isRoll, setIsRoll] = useState(false)
-    const [dice1Amount, setDice1Amount] = useState(0)
-    const [dice2Amount, setDice2Amount] = useState(0)
 
     const reactDice1 = useRef<ReactDiceRef>(null)
     const reactDice2 = useRef<ReactDiceRef>(null)
@@ -66,7 +64,7 @@ export default function DiceGame(){
                                 defaultRoll={Math.floor((new Date()).getTime()/19)%6+1}
                                 numDice={1}
                                 rollTime={7} outline 
-                                rollDone={(totalValue, values)=>{setDice1Amount(values[0]); if(isRoll) reactDice1.current?.rollAll()}}/>
+                                rollDone={(totalValue, values)=>{if(isRoll) reactDice1.current?.rollAll()}}/>
                         </div>
                         <div className="one-dice">
                             <ReactDice 
@@ -77,7 +75,7 @@ export default function DiceGame(){
                                 defaultRoll={Math.floor((new Date()).getTime()/139)%6+1} 
                                 numDice={1} 
                                 rollTime={7} outline 
-                                rollDone={(totalValue, values)=>{setDice2Amount(values[0]); if(isRoll) reactDice2.current?.rollAll()}}/>
+                                rollDone={(totalValue, values)=>{if(isRoll) reactDice2.current?.rollAll()}}/>
                         </div>
                     </div>
                 :

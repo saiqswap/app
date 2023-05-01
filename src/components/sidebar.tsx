@@ -19,7 +19,7 @@ const menuItems = [
     {name: "Coin Flip", element: <CurrencyExchangeIcon />, link: "/coinflip"},
     {name: "Dice Game", element: <CasinoRoundedIcon sx={{fontSize: "30px"}}/>, link: "/dice"},
     {name: "Tower", element: <DomainRoundedIcon sx={{fontSize: "30px"}}/>, link: "/tower"},
-    {name: "Docs", element: <DocumentScannerRoundedIcon sx={{fontSize: "30px"}}/>, link: "/docs"},
+    {name: "Docs", element: <DocumentScannerRoundedIcon sx={{fontSize: "30px"}}/>, link: "https://sui-heroes.gitbook.io/sui-heroes/"},
 ]
 
 const drawerWidth = 240;
