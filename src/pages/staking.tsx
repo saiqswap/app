@@ -1,7 +1,8 @@
 import { Button, CircularProgress } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useProgram } from "../utils/useProgram"
-import { DECIMALS, STAKING_TOKEN_TYPE, openNotification, sleep } from "../utils/constants"
+import { InfoStaking } from "../utils/constants"
+import { openNotification, sleep } from '../utils/components'
 import { useWallet } from "@suiet/wallet-kit"
 
 export default function Staking(){
@@ -12,7 +13,6 @@ export default function Staking(){
     const [unstakeAmount, setUnstakeAmount] = useState('')
 
     const [userData, setUserData] = useState<any>(null)
-    const [isUserDataLoading, setIsUserDataLoading] = useState(false)
     const [poolData, setPoolData] = useState<any>(null)
     const [shsOwned, setShsOwned] = useState(0)
     const [ownedNfts, setOwnedNfts] = useState<any[]>([])
@@ -22,7 +22,6 @@ export default function Staking(){
 
     useEffect(()=>{
         getPoolData()
-        // getUserDataBatch()
     },[])
 
     useEffect(()=>{
@@ -47,7 +46,7 @@ export default function Staking(){
     }
 
     const getShsAmount = async() => {
-        setShsOwned(await getShsOwned(STAKING_TOKEN_TYPE))
+        setShsOwned(await getShsOwned(InfoStaking.token_type))
     }
 
     const getUserOwnedNftsData = async() => {
@@ -109,7 +108,7 @@ export default function Staking(){
             <div className="staking-main-panel-pool-info">
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">TVL</p>
-                    <p className="staking-main-panel-one-info-detail">{poolData==null ? "-" : (poolData['tvl']/(10**DECIMALS))+" SHS"}</p>
+                    <p className="staking-main-panel-one-info-detail">{poolData==null ? "-" : (poolData['tvl']/(10**InfoStaking.token_decimals))+" SHS"}</p>
                 </div>
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">APY</p>
@@ -117,17 +116,17 @@ export default function Staking(){
                 </div>
             </div>
             <div className="staking-main-panel-reward-info">
-                <p className="staking-main-panel-reward-amount">{shsOwned/(10**DECIMALS)}</p>
+                <p className="staking-main-panel-reward-amount">{shsOwned/(10**InfoStaking.token_decimals)}</p>
                 <p className="staking-main-panel-reward-info-title">SHS Owned</p>
             </div>
             <div className="staking-main-panel-staking-info">
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">Staked</p>
-                    <p className="staking-main-panel-one-info-detail">{userData==null ? "-" : (userData['amount']/(10**DECIMALS))+" SHS"}</p>
+                    <p className="staking-main-panel-one-info-detail">{userData==null ? "-" : (userData['amount']/(10**InfoStaking.token_decimals))+" SHS"}</p>
                 </div>
                 <div className="staking-main-panel-one-info">
                     <p className="staking-main-panel-one-info-title">Reward</p>
-                    <p className="staking-main-panel-one-info-detail">{userData==null? "-" : (userData['reward_amount']/(10**DECIMALS))+" SHS"}</p>
+                    <p className="staking-main-panel-one-info-detail">{userData==null? "-" : (userData['reward_amount']/(10**InfoStaking.token_decimals))+" SHS"}</p>
                 </div>
             </div>
             <div className="staking-main-panel-action-part">
@@ -215,7 +214,7 @@ export default function Staking(){
                         isStakedNftsLoading ?
                             <div className="nft-staking-one-panel-content-body-loading"><CircularProgress size="10rem" color="inherit" disableShrink/></div>
                         :
-                        stakedNfts.length==0 ?
+                        stakedNfts.length===0 ?
                             <div className="nft-staking-one-panel-content-body-banner">No NFTs</div>
                         :
                         stakedNfts.map((item : any, idx: number)=>{

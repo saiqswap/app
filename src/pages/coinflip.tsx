@@ -1,6 +1,7 @@
-import { Savings as SavingsIcon, AttachMoney as AttachMoneyIcon, Brightness7 as Brightness7Icon, Brightness3 as Brightness3Icon, Opacity } from "@mui/icons-material"
-import { useDebugValue, useEffect, useState } from "react"
-import { COINFLIP_TOKEN_DECIMALS, COINFLIP_TOKEN_TYPE, COINFLIP_WAGER_AMOUNT, openNotification, sleep } from "../utils/constants"
+import { Brightness7 as Brightness7Icon, Brightness3 as Brightness3Icon } from "@mui/icons-material"
+import { useEffect, useState } from "react"
+import { openNotification, sleep } from "../utils/components"
+import { InfoCoinflip } from "../utils/constants"
 import { useProgram } from "../utils/useProgram"
 import { useWallet } from "@suiet/wallet-kit"
 import Confetti from "react-confetti"
@@ -36,13 +37,13 @@ export default function Coinflip(){
     }
 
     const getTokenAmount = async() => {
-        setTokenAmount(await getShsOwned(COINFLIP_TOKEN_TYPE))
+        setTokenAmount(await getShsOwned(InfoCoinflip.token_type))
     }
 
     return <div className="coinflip-dashboard">
         {/* <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={200} wind={-0.01} recycle={false}/> */}
         <div className="dashboard-header">
-            <h2>COIN FLIP&nbsp;&nbsp;:&nbsp;&nbsp;<span style={{color: "#00ffff"}}>{Math.floor(tokenAmount/(10**COINFLIP_TOKEN_DECIMALS)*100)/100}</span> SHS</h2>
+            <h2>COIN FLIP&nbsp;&nbsp;:&nbsp;&nbsp;<span style={{color: "#00ffff"}}>{Math.floor(tokenAmount/(10**InfoCoinflip.token_decimals)*100)/100}</span> SHS</h2>
         </div>
         {
             gameStatus===0 ?
@@ -58,7 +59,7 @@ export default function Coinflip(){
                     <h3 className="coinflip-gameboard-h3">Choose your side</h3>
                     <div className="wager-select-panel">
                     {
-                        COINFLIP_WAGER_AMOUNT.map((item,idx)=>{
+                        InfoCoinflip.wager_amount.map((item,idx)=>{
                             return <button key={idx} type="button" className={"btn-wager "+(selectedAmount===idx?"active":"")} onClick={()=>{setSelectedAmount(idx)}}>{item+" SHS"}</button>
                         })
                     }
@@ -69,7 +70,7 @@ export default function Coinflip(){
                         <button className="btn-flip" onClick={async()=>{
                             try{
                                 setGameStatus(1)
-                                let res = await coinflip_flip(selectedSide, COINFLIP_WAGER_AMOUNT[selectedAmount])
+                                let res = await coinflip_flip(selectedSide, InfoCoinflip.wager_amount[selectedAmount])
                                 if(res.events[0].parsedJson.result===1){
                                     setWinNumber(winNumber+1)
                                 }else{
@@ -115,7 +116,7 @@ export default function Coinflip(){
                         }
                         </div>
                     </div>
-                    <h3 className="coinflip-gameboard-h3">Bet amount : {userData.amount/(10**COINFLIP_TOKEN_DECIMALS)} SHS</h3>
+                    <h3 className="coinflip-gameboard-h3">Bet amount : {userData.amount/(10**InfoCoinflip.token_decimals)} SHS</h3>
                     <div className="btn-flip-wrapper">
                         <button className="btn-flip" onClick={async()=>{
                             try{
@@ -141,7 +142,7 @@ export default function Coinflip(){
                         }
                         </div>
                     </div>
-                    <h3 className="coinflip-gameboard-h3">You lost {COINFLIP_WAGER_AMOUNT[selectedAmount]} SHS</h3>
+                    <h3 className="coinflip-gameboard-h3">You lost {InfoCoinflip.wager_amount[selectedAmount]} SHS</h3>
                     <div className="btn-flip-wrapper">
                         <button className="btn-flip" onClick={async()=>{
                             setGameStatus(0)

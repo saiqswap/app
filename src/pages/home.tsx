@@ -4,7 +4,6 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'react-slick'
 import { FaDiscord, FaTwitter } from 'react-icons/fa'
-// import { RoadmapContent } from "../utils/constants";
 
 import USER1_IMG from '../assets/images/user/user1.jpeg'
 import USER2_IMG from '../assets/images/user/user2.jpeg'
@@ -18,14 +17,12 @@ import USER9_IMG from '../assets/images/user/user9.jpeg'
 import USER10_IMG from '../assets/images/user/user10.jpeg'
 import USER11_IMG from '../assets/images/user/user11.jpeg'
 import USER12_IMG from '../assets/images/user/user12.jpeg'
-// import PARTNER_IMG from '../assets/images/partnerMix.png'
 
 import COINFLIP_IMG from '../assets/images/originals/COINFLIP.png'
 import DICE_IMG from '../assets/images/originals/DICE.png'
 import TOWER_IMG from '../assets/images/originals/TOWER.png'
 import LUCKY_WHEEL_IMG from '../assets/images/originals/LUCKY_WHEEL.png'
-// import JACKPOT_IMG from '../assets/images/originals/jackpot.png'
-// import PLINKO_IMG from '../assets/images/originals/plinko.png'
+
 import { useRef } from "react";
 
 const images = [
@@ -47,24 +44,27 @@ const ORIGINALS_PANEL = [
     {title:"COIN FLIP", logo:COINFLIP_IMG, src:"/coinflip"},
     {title:"DICE", logo:DICE_IMG,src:"/dice"},
     {title:"TOWER", logo:TOWER_IMG,src:"/tower"},
-    {title:"LUCKY WHEEL", logo: LUCKY_WHEEL_IMG, src:"/wheel"}
+    {title:"LUCKY WHEEL", logo: LUCKY_WHEEL_IMG, src:"/home"}
 ]
 
 export default function Home(){
     const originalSliderRef = useRef<Slider>(null)
     const settings = {
         arrows: false,
-        dots: false,
+        dots: true,
         infinite: true,
         speed: 1000,
-        // fade: true,
+        fade: true,
         pauseOnFocus: true,
-        focusOnSelect: true,
+        // focusOnSelect: true,
         // autoplay: true,
+        customPaging: (i : any)=>(
+            <div style={{width:"10px", height:"10px", borderRadius: "100%", backgroundColor: "gray", transition: "all 0.5s ease 0s", transform: "translate(0, -30px)"}}></div>
+        )
     }
 
     const settingSlider1 = {
-        arrows: true,
+        arrows: false,
         infinite: true,
         speed: 100,
         // centerMode: true,

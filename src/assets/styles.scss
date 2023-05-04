@@ -50,6 +50,22 @@ body{
     font-family: "IndustryMedium" !important;
 }
 
+.empty-dashboard{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 100px;
+	padding-left: 65px;
+	color: white;
+	width: calc(100% - 65px);
+	height: 100%;
+	h1{
+		font-family: "IndustryMedium";
+		font-size: 70px;
+		margin: 0;
+	}
+}
+
 .home-dashboard{
 	text-align: center;
 	display: flex;
@@ -63,6 +79,13 @@ body{
 
 	.home-slider{
 		width: 80%;
+		.slick-dots{
+			.slick-active{
+				div{
+					background-color: red !important;
+				}
+			}
+		}
 		.one-slider{
 			width: 80%;
 			height: 370px;

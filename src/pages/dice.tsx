@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react"
-import { DICE_TOKEN_TYPE, DICE_WAGER_AMOUNT, DICE_TOKEN_DECIMALS, openNotification, sleep } from "../utils/constants"
+import { openNotification } from "../utils/components"
+import { InfoDice } from '../utils/constants'
 import { useProgram } from "../utils/useProgram"
 import { useWallet } from "@suiet/wallet-kit"
 import ReactDice, {ReactDiceRef} from 'react-dice-complete'
@@ -35,7 +36,7 @@ export default function DiceGame(){
     },[wallet])
 
     const getTokenAmount = async() => {
-        setTokenAmount(await getShsOwned(DICE_TOKEN_TYPE))
+        setTokenAmount(await getShsOwned(InfoDice.token_type))
     }
 
     const getUserData = async() => {
@@ -49,7 +50,7 @@ export default function DiceGame(){
 
     return <div className="dice-dashboard">
         <div className="dashboard-header">
-            <h2>DICE GAME&nbsp;&nbsp;:&nbsp;&nbsp;<span style={{color: "#00ffff"}}>{Math.floor(tokenAmount/(10**DICE_TOKEN_DECIMALS)*100)/100}</span> SHS</h2>
+            <h2>DICE GAME&nbsp;&nbsp;:&nbsp;&nbsp;<span style={{color: "#00ffff"}}>{Math.floor(tokenAmount/(10**InfoDice.token_decimals)*100)/100}</span> SHS</h2>
         </div>
         <div className="dice-gameboard">
             {
@@ -99,7 +100,7 @@ export default function DiceGame(){
                         <h3 className="dice-gameboard-h3">Choose case</h3>
                         <div className="wager-select-panel">
                         {
-                            DICE_WAGER_AMOUNT.map((item, idx)=>{
+                            InfoDice.wager_amount.map((item, idx)=>{
                                 return <button key={idx} type="button" className={"btn-wager "+(selectedAmount===idx?"active":"")} onClick={()=>{setSelectedAmount(idx)}}>{item+" SHS"}</button>
                             })
                         }
@@ -112,7 +113,7 @@ export default function DiceGame(){
                                 try{
                                     reactDice1.current?.rollAll()
                                     reactDice2.current?.rollAll()
-                                    let res = await dice_roll(selectedCase,DICE_WAGER_AMOUNT[selectedAmount])
+                                    let res = await dice_roll(selectedCase,InfoDice.wager_amount[selectedAmount])
                                     console.log(res.events[0].parsedJson)
                                     
                                     setUserData({...res.events[0].parsedJson})

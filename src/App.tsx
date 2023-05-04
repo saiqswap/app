@@ -1,5 +1,5 @@
 import {Route, Routes, BrowserRouter as Router} from 'react-router-dom'
-import {WalletProvider, SuiTestnetChain, Chain} from '@suiet/wallet-kit'
+import {WalletProvider, SuiMainnetChain, SuiTestnetChain, Chain} from '@suiet/wallet-kit'
 import '@suiet/wallet-kit/style.css'
 
 import Home from './pages/home';
@@ -28,7 +28,7 @@ function App() {
   }
 
   return (
-      <WalletProvider chains={[SuiTestnetChain]} autoConnect={true}>
+      <WalletProvider chains={[SuiMainnetChain]} autoConnect={true}>
         <ProgramProvider>
           <Header/>
           <SideBar/>
@@ -36,10 +36,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home/>}/>
               <Route path="/home" element={<Home/>}/>
-              <Route path="/staking" element={<Staking/>} />
+              <Route path="/staking" element={<Empty/>} />
               <Route path="/about" element={<Empty/>} />
-              <Route path="/coinflip" element={<Coinflip/>}/>
-              <Route path="/dice" element={<DiceGame/>}></Route>
+              <Route path="/coinflip" element={<Empty/>}/>
+              <Route path="/dice" element={<Empty/>}></Route>
             </Routes>
           </Router>
         </ProgramProvider>

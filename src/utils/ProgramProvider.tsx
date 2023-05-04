@@ -2,7 +2,7 @@ import {FC, useCallback, ReactNode,} from 'react'
 import { ProgramContext } from './useProgram'
 import { useWallet, useSuiProvider } from '@suiet/wallet-kit'
 import { TransactionBlock } from '@mysten/sui.js'
-import { SHS_STAKING_CONTRACT_ADDRESS, DECIMALS, STAKING_POOL, STAKING_NFT_TYPE, STAKING_TOKEN_TYPE, SHS_COINFLIP_CONTRACT_ADDRESS, COINFLIP_TOKEN_TYPE, COINFLIP_POOL, COINFLIP_TOKEN_DECIMALS, DICE_POOL, DICE_TOKEN_TYPE, DICE_TOKEN_DECIMALS, SHS_DICE_CONTRACT_ADDRESS} from './constants'
+import { InfoStaking, InfoCoinflip, InfoDice} from './constants'
 export interface ProgramProviderProps{
     children : ReactNode
 }
@@ -28,7 +28,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     
     const getStakingPoolData = async() => {
         try{
-            let res = (await provider.getObject({id: STAKING_POOL, options: {showContent: true}})).data
+            let res = (await provider.getObject({id: InfoStaking.pool, options: {showContent: true}})).data
             if(res?.content?.dataType==="moveObject"){
                 return res?.content!.fields
             }else
@@ -43,7 +43,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             if(wallet.address===undefined){
                 return null
             }else{
-                let stakeData = (await provider.getDynamicFieldObject({parentId: STAKING_POOL, name:{type:"address", value:wallet.address}})).data
+                let stakeData = (await provider.getDynamicFieldObject({parentId: InfoStaking.pool, name:{type:"address", value:wallet.address}})).data
                 if(stakeData?.content?.dataType==="moveObject"){
                     let current_time = (new Date()).getTime()
                     let uD = stakeData.content.fields
@@ -65,7 +65,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
             if(wallet.address === undefined){
                 return []
             }else{
-                let ownedNft = (await provider.getOwnedObjects({owner:wallet.address, filter:{StructType:STAKING_NFT_TYPE}, options:{showType: true, showContent: true}})).data
+                let ownedNft = (await provider.getOwnedObjects({owner:wallet.address, filter:{StructType:InfoStaking.nft_type}, options:{showType: true, showContent: true}})).data
                 return ownedNft.map((item)=>{
                     return {objectId: item.data?.objectId, data: item.data?.content, selected: false}
                 })
@@ -81,9 +81,9 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
                 return []
             }else{
                 let nfts : any[] = []
-                let stakeData = (await provider.getDynamicFieldObject({parentId: STAKING_POOL, name:{type:"address", value:wallet.address}})).data
+                let stakeData = (await provider.getDynamicFieldObject({parentId: InfoStaking.pool, name:{type:"address", value:wallet.address}})).data
                 let res = (await provider.getDynamicFields({parentId: stakeData?.objectId!}))
-                let listingNfts = res.data.filter((item)=>{return item.objectType===STAKING_NFT_TYPE})
+                let listingNfts = res.data.filter((item)=>{return item.objectType===InfoStaking.nft_type})
                 for(let item of listingNfts){
                     let nftDetail = (await provider.getObject({id: item.objectId, options: {showContent:true}}))
                     nfts.push({id: item.objectId, data: nftDetail.data?.content, selected: false})
@@ -98,25 +98,25 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const stake_shs = useCallback(async(amount: number)=>{
         let coins = (await provider.getCoins({
             owner: wallet.address!,
-            coinType: STAKING_TOKEN_TYPE
+            coinType: InfoStaking.token_type
         })).data
-        let stakeAmount = amount * (10 ** DECIMALS)
+        let stakeAmount = amount * (10 ** InfoStaking.token_decimals)
         if(coins.length===0) throw new Error("No token");
         let total=0;
-        for(let item of coins) total+=item.balance
+        for(let item of coins) total+=Number(item.balance)
         if(total<stakeAmount) throw new Error("Not Enough Token")
         
         const tx = new TransactionBlock()
         if(coins.length>1)
             tx.mergeCoins(tx.object(coins[0].coinObjectId), coins.slice(1,coins.length).map(item=>{return tx.object(item.coinObjectId)}))
         tx.moveCall({
-            target: `${SHS_STAKING_CONTRACT_ADDRESS}::token_staking::stake_token_mut`,
+            target: `${InfoStaking.constract}::token_staking::stake_token_mut`,
             typeArguments:[
-                STAKING_TOKEN_TYPE,
-                STAKING_NFT_TYPE
+                InfoStaking.token_type,
+                InfoStaking.nft_type
             ],
             arguments:[
-                tx.object(STAKING_POOL),
+                tx.object(InfoStaking.pool),
                 tx.object(coins[0].coinObjectId),
                 tx.pure(stakeAmount),
                 tx.object("0x6")
@@ -126,16 +126,16 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     },[wallet, provider])
 
     const unstake_shs = useCallback(async(amount: number)=>{
-        let unstakeAmount = amount * (10 ** DECIMALS)
+        let unstakeAmount = amount * (10 ** InfoStaking.token_decimals)
         const tx = new TransactionBlock()
         tx.moveCall({
-            target: `${SHS_STAKING_CONTRACT_ADDRESS}::token_staking::unstake_token`,
+            target: `${InfoStaking.constract}::token_staking::unstake_token`,
             typeArguments:[
-                STAKING_TOKEN_TYPE,
-                STAKING_NFT_TYPE
+                InfoStaking.token_type,
+                InfoStaking.nft_type
             ],
             arguments:[
-                tx.object(STAKING_POOL),
+                tx.object(InfoStaking.pool),
                 tx.pure(unstakeAmount),
                 tx.object("0x6")
             ]
@@ -146,13 +146,13 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const claim_rewards = useCallback(async()=>{
         const tx= new TransactionBlock()
         tx.moveCall({
-            target: `${SHS_STAKING_CONTRACT_ADDRESS}::token_staking::redeem_reward`,
+            target: `${InfoStaking.constract}::token_staking::redeem_reward`,
             typeArguments:[
-                STAKING_TOKEN_TYPE,
-                STAKING_NFT_TYPE
+                InfoStaking.token_type,
+                InfoStaking.nft_type
             ],
             arguments:[
-                tx.object(STAKING_POOL),
+                tx.object(InfoStaking.pool),
                 tx.object("0x6")
             ]
         })
@@ -163,13 +163,13 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         const tx = new TransactionBlock()
         for(let item of items)
             tx.moveCall({
-                target: `${SHS_STAKING_CONTRACT_ADDRESS}::token_staking::stake_nft`,
+                target: `${InfoStaking.constract}::token_staking::stake_nft`,
                 typeArguments:[
-                    STAKING_TOKEN_TYPE,
-                    STAKING_NFT_TYPE
+                    InfoStaking.token_type,
+                    InfoStaking.nft_type
                 ],
                 arguments:[
-                    tx.object(STAKING_POOL),
+                    tx.object(InfoStaking.pool),
                     tx.object(item),
                     tx.object("0x06")
                 ]
@@ -181,13 +181,13 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
         const tx = new TransactionBlock()
         for(let item of items)
             tx.moveCall({
-                target: `${SHS_STAKING_CONTRACT_ADDRESS}::token_staking::unstake_nft`,
+                target: `${InfoStaking.constract}::token_staking::unstake_nft`,
                 typeArguments:[
-                    STAKING_TOKEN_TYPE,
-                    STAKING_NFT_TYPE
+                    InfoStaking.token_type,
+                    InfoStaking.nft_type
                 ],
                 arguments:[
-                    tx.object(STAKING_POOL),
+                    tx.object(InfoStaking.pool),
                     tx.object(item),
                     tx.object("0x06")
                 ]
@@ -198,7 +198,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const getUserCoinflipData = async() => {
         try{
             if(wallet.address===undefined) return null
-            let coinflipData = (await provider.getDynamicFieldObject({parentId: COINFLIP_POOL, name: {type:"address", value: wallet.address}})).data
+            let coinflipData = (await provider.getDynamicFieldObject({parentId: InfoCoinflip.pool, name: {type:"address", value: wallet.address}})).data
             if(coinflipData?.content?.dataType==="moveObject")
                 return coinflipData.content.fields
             else
@@ -211,24 +211,24 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const coinflip_flip = useCallback(async(selectedSide: number, selectedAmount: number)=>{
         let coins = (await provider.getCoins({
             owner: wallet.address!,
-            coinType: COINFLIP_TOKEN_TYPE
+            coinType: InfoCoinflip.token_type
         })).data
-        let amount = selectedAmount * (10 ** COINFLIP_TOKEN_DECIMALS)
+        let amount = selectedAmount * (10 ** InfoCoinflip.token_decimals)
         if(coins.length===0) throw new Error("No token");
         let total=0;
-        for(let item of coins) total+=item.balance
+        for(let item of coins) total+=Number(item.balance)
         if(total<amount) throw new Error("Not Enough Token")
 
         const tx = new TransactionBlock()
         if(coins.length>1)
             tx.mergeCoins(tx.object(coins[0].coinObjectId), coins.slice(1,coins.length).map(item=>{return tx.object(item.coinObjectId)}))
         tx.moveCall({
-            target: `${SHS_COINFLIP_CONTRACT_ADDRESS}::coinflip::play_mut`,
+            target: `${InfoCoinflip.contract}::coinflip::play_mut`,
             typeArguments:[
-                COINFLIP_TOKEN_TYPE
+                InfoCoinflip.token_type
             ],
             arguments:[
-                tx.object(COINFLIP_POOL),
+                tx.object(InfoCoinflip.pool),
                 tx.object(coins[0].coinObjectId),
                 tx.pure(amount),
                 tx.pure(selectedSide+1),
@@ -241,12 +241,12 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const coinflip_claim = useCallback(async()=>{
         const tx = new TransactionBlock()
         tx.moveCall({
-            target: `${SHS_COINFLIP_CONTRACT_ADDRESS}::coinflip::claim`,
+            target: `${InfoCoinflip.contract}::coinflip::claim`,
             typeArguments:[
-                COINFLIP_TOKEN_TYPE
+                InfoCoinflip.token_type
             ],
             arguments:[
-                tx.object(COINFLIP_POOL)
+                tx.object(InfoCoinflip.pool)
             ]
         })
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx, options:{showEffects:true, showEvents: true, showObjectChanges: true, showBalanceChanges: true, showInput: true}})
@@ -255,7 +255,7 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const getUserDiceData = async() => {
         try{
             if(wallet.address===undefined) return null
-            let diceData = (await provider.getDynamicFieldObject({parentId: DICE_POOL, name: {type:"address", value: wallet.address}})).data
+            let diceData = (await provider.getDynamicFieldObject({parentId: InfoDice.pool, name: {type:"address", value: wallet.address}})).data
             console.log(diceData)
             if(diceData?.content?.dataType==="moveObject")
                 return diceData.content.fields
@@ -269,24 +269,24 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const dice_roll = useCallback(async(selectedCase: number, selectedAmount: number)=>{
         let coins = (await provider.getCoins({
             owner: wallet.address!,
-            coinType: DICE_TOKEN_TYPE
+            coinType: InfoDice.token_type
         })).data
-        let amount = selectedAmount * (10 ** DICE_TOKEN_DECIMALS)
+        let amount = selectedAmount * (10 ** InfoDice.token_decimals)
         if(coins.length===0) throw new Error("No token");
         let total=0;
-        for(let item of coins) total+=item.balance
+        for(let item of coins) total+=Number(item.balance)
         if(total<amount) throw new Error("Not Enough Token")
 
         const tx = new TransactionBlock()
         if(coins.length>1)
             tx.mergeCoins(tx.object(coins[0].coinObjectId), coins.slice(1,coins.length).map(item=>{return tx.object(item.coinObjectId)}))
         tx.moveCall({
-            target: `${SHS_DICE_CONTRACT_ADDRESS}::dicegame::play_mut`,
+            target: `${InfoDice.contract}::dicegame::play_mut`,
             typeArguments:[
-                DICE_TOKEN_TYPE
+                InfoDice.token_type
             ],
             arguments:[
-                tx.object(DICE_POOL),
+                tx.object(InfoDice.pool),
                 tx.object(coins[0].coinObjectId),
                 tx.pure(amount),
                 tx.pure(selectedCase),
@@ -299,12 +299,12 @@ export const ProgramProvider: FC<ProgramProviderProps> = ({children}) => {
     const dice_claim = useCallback(async()=>{
         const tx = new TransactionBlock()
         tx.moveCall({
-            target: `${SHS_DICE_CONTRACT_ADDRESS}::dicegame::claim`,
+            target: `${InfoDice.contract}::dicegame::claim`,
             typeArguments:[
-                DICE_TOKEN_TYPE
+                InfoDice.token_type
             ],
             arguments:[
-                tx.object(DICE_POOL)
+                tx.object(InfoDice.pool)
             ]
         })
         await wallet.signAndExecuteTransactionBlock({transactionBlock: tx, options:{showEffects:true, showEvents: true, showObjectChanges: true, showBalanceChanges: true, showInput: true}})
