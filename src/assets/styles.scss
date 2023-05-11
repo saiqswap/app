@@ -848,13 +848,9 @@ body{
 	justify-content: center;
 	flex-direction: column;
 	padding-top: 70px;
-	padding-left: 80px;
+	padding-left: 57px;
 
 	.dashboard-header{
-		width: 100%;
-		display: flex;
-		justify-content: left;
-
 		h2{
 			color: rgb(118, 139, 173);
 		}
@@ -1025,6 +1021,219 @@ body{
 			}
 		}
 	}
+
+	.recent-game-header{
+		width: 90%;
+		max-width: 1200px;
+		text-align: left;
+		font-size: 20px;
+		font-weight: 600;
+		color: rgb(118, 139, 173);
+		font-family: "IndustryMedium";
+		margin: 30px 0;
+	}
+
+	.recent-game-body{
+		width: 90%;
+		max-width: 1200px;
+		margin-bottom: 40px;
+		.recent-game-item{
+			width: 100%;
+			border-bottom: 1px solid rgb(13, 20, 30);
+
+			display: grid;
+			direction: ltr;
+			grid-template-columns: 1fr max-content 1fr;
+			position: relative;
+			gap: 0px;
+
+			&::before{
+				content: "";
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				background: rgb(26, 41, 61);
+				z-index: -1;
+			}
+			&.recent-game-blue-item{
+				background: linear-gradient(90deg, rgba(37, 84, 77, 0) -50%, rgb(37, 84, 77), rgba(37, 84, 77, 0) 50%);
+			}
+			&.recent-game-red-item{
+				background: linear-gradient(-90deg, rgba(66, 37, 84, 0) -50%, rgb(66, 37, 84), rgba(66, 37, 84, 0) 50%);
+			}
+			&.recent-game-top-item{
+				border-top-left-radius: 16px;
+				border-top-right-radius: 16px;
+				&::before{
+					border-top-left-radius: 16px;
+					border-top-right-radius: 16px;
+				}
+			}
+			&.recent-game-bottom-item{
+				border-bottom-left-radius: 16px;
+				border-bottom-right-radius: 16px;
+				&::before{
+					border-bottom-left-radius: 16px;
+					border-bottom-right-radius: 16px;
+				}
+			}
+			.recent-game-center{
+				display: flex;
+				height:100%;
+				align-items: center;
+				.coin{
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					border-radius: 100%;
+					width: 50px;
+					height: 50px;
+
+					@media (max-width: 580px) {
+						width: 34px;
+						height:34px;
+					}
+					
+					&.front-coin{
+						background: linear-gradient(149.33deg, rgb(79, 255, 139) 7.45%, rgb(75, 136, 255) 98.66%);
+						color: rgba(0, 24, 46, 0.5);
+					}
+					
+					&.back-coin{
+						background: linear-gradient(149.33deg, rgb(227, 146, 255) 7.45%, rgb(154, 26, 255) 98.66%);
+						color: rgba(46, 0, 143, 0.5);
+					}
+				}
+			}
+			.recent-game-left-right{
+				display: grid;
+				grid-template-columns: max-content max-content auto;
+				-webkit-box-align: center;
+				align-items: center;
+				padding: 16px 19px;
+				gap: 17px;
+				transition: all 0.4s ease 0s;
+				opacity: 0.4;
+
+				@media (max-width: 580px) {
+					padding: 16px 4px;
+				}
+
+				&.recent-game-left{
+					direction: ltr;
+				}
+				&.recent-game-right{
+					direction: rtl;
+				}
+				&.win-panel{
+					opacity: 1;
+				}
+
+				.item{
+					display: flex;
+					height: 100%;
+					align-items: center;
+
+					.logo{
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 34px;
+						height: 34px;
+						border-radius: 100%;
+					
+						@media (max-width: 670px) {
+							display: none;
+						}
+
+						&.left-logo{
+							border: 2px solid rgb(79, 255, 139);
+							color: rgb(79, 255, 139);
+						}
+						&.right-logo{
+							border: 2px solid rgb(227, 146, 255);
+							color: rgb(227, 146, 255);
+						}
+					}
+
+					.item-name{
+						color: white;
+						font-size: 16px;
+						font-family: "IndustryMedium";
+						@media (max-width: 580px) {
+							font-size: 12px;
+						}
+					}
+
+					&.item-flex{
+						justify-content: space-between;
+						.bet-amount{
+							display: flex;
+							align-items: center;
+							gap: 5px;
+							@media (max-width: 580px) {
+								display: none;
+							}
+							.coin-image{
+								background-color: rgb(255, 226, 75);
+								border: 2px solid rgb(255, 179, 31);
+								border-radius: 100%;
+								width: 12px;
+								height: 12px;
+							}
+							.amount{
+								font-size: 14px;
+								color:white;
+								font-family: "IndustryMedium";
+							}
+						}
+						.bet-image{
+
+						}
+					}
+				}
+			}
+			.recent-game-left{
+				.item-flex{
+					@media (max-width: 900px) {
+						flex-direction: column;
+					}
+				}
+			}
+			.recent-game-right{
+				.item-flex{
+					@media (max-width: 900px) {
+						flex-direction: column;
+						.bet-amount{
+							order: 2;
+						}
+						.bet-image{
+							order: 1;
+						}
+					}
+				}
+			}
+		}
+		.show-more{
+			margin-top: 30px;
+			button{
+				width: 150px;
+				height: 40px;
+				border: 3px solid rgb(254, 232, 126);
+				border-radius: 8px;
+				color: #fff;
+				background: linear-gradient(rgb(7, 11, 16) 0%, rgba(7, 11, 16, 0.3) 100%);
+				font-size: 14px;
+				font-family: "IndustryBlack";
+
+				&:hover{
+					filter: brightness(120%)
+				}
+			}
+		}
+	}
 }
 
 .dice-dashboard{
@@ -1037,7 +1246,6 @@ body{
 	padding-left: 57px;
 
 	.dashboard-header{
-		padding-left: 30px;
 		text-align: left;
 
 		h2{
@@ -1233,6 +1441,8 @@ body{
 			}
 		}
 	}
+
+
 }
 
 .ant-notification{

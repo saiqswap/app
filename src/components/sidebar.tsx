@@ -6,7 +6,8 @@ import {
     CurrencyExchange as CurrencyExchangeIcon,
     DomainRounded as DomainRoundedIcon,
     CasinoRounded as CasinoRoundedIcon,
-    DocumentScannerRounded as DocumentScannerRoundedIcon
+    DocumentScannerRounded as DocumentScannerRoundedIcon,
+    SportsSoccer as RouletteIcon
 } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -16,9 +17,10 @@ import { useParams } from 'react-router-dom'
 const menuItems = [
     {name: "Home", element: <HomeIcon sx={{fontSize: "30px"}}/>, link: "/home"},
     {name: "Staking", element: <AccountBalanceIcon sx={{fontSize: "30px"}}/>, link: "/staking"},
-    {name: "Coin Flip", element: <CurrencyExchangeIcon />, link: "/coinflip"},
+    {name: "Coin Flip", element: <CurrencyExchangeIcon  sx={{fontSize: "30px"}}/>, link: "/coinflip"},
     {name: "Dice Game", element: <CasinoRoundedIcon sx={{fontSize: "30px"}}/>, link: "/dice"},
     {name: "Tower", element: <DomainRoundedIcon sx={{fontSize: "30px"}}/>, link: "/tower"},
+    {name: "Roulette", element:<RouletteIcon  sx={{fontSize: "30px"}}/>, link: "/roulette"},
     {name: "Docs", element: <DocumentScannerRoundedIcon sx={{fontSize: "30px"}}/>, link: "https://sui-heroes.gitbook.io/sui-heroes/"},
 ]
 

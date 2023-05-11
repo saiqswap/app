@@ -13,6 +13,7 @@ import Empty from './pages/empty';
 
 import './assets/styles.scss'
 import { ProgramProvider } from './utils/ProgramProvider';
+import { DatabaseProvider } from './utils/DatabaseProvider';
 
 function App() {
   const suietChain : Chain = {
@@ -28,20 +29,24 @@ function App() {
   }
 
   return (
-      <WalletProvider chains={[SuiMainnetChain]} autoConnect={true}>
+      <WalletProvider chains={[SuiTestnetChain]} autoConnect={true}>
         <ProgramProvider>
           <Header/>
           <SideBar/>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Home/>}/>
-              <Route path="/home" element={<Home/>}/>
-              <Route path="/staking" element={<Empty/>} />
-              <Route path="/about" element={<Empty/>} />
-              <Route path="/coinflip" element={<Empty/>}/>
-              <Route path="/dice" element={<Empty/>}></Route>
-            </Routes>
-          </Router>
+          <DatabaseProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/home" element={<Home/>}/>
+                <Route path="/staking" element={<Staking/>} />
+                <Route path="/coinflip" element={<Coinflip/>}/>
+                <Route path="/dice" element={<DiceGame/>}/>
+                <Route path="/tower" element={<Empty/>}/>
+                <Route path="/roulette" element={<Empty/>}/>
+                <Route path="/about" element={<Empty/>} />
+              </Routes>
+            </Router>
+          </DatabaseProvider>
         </ProgramProvider>
       </WalletProvider>
   );
